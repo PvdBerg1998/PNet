@@ -14,7 +14,7 @@ PNet is an easy to use networking framework for Java.
   
 # Download
 The latest packages are available [here](https://github.com/PvdBerg1998/PNet/tree/master/out/artifacts).
-PNet is released under the [MIT license](https://choosealicense.com/licenses/mit/).
+PNet is released under the [MIT license](LICENSE).
   
 # How to use
 - [Packets](#packets)
@@ -184,7 +184,7 @@ TLS.setTrustStore("truststore.ts", "password");
 ```
 SSL debug output can be turned on by calling `TLS.setSSLDebug()`.
 
-PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(https://github.com/PvdBerg1998/PNet/blob/master/src/nl/pvdberg/pnet/security/TLS.java)
+PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(PNet/src/nl/pvdberg/pnet/security/TLS.java)
 
 ## Using compression
 To compress a Packet, use the `PacketCompressor` helper class.
