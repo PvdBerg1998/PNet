@@ -78,9 +78,81 @@ server.stop();
 
 ## Creating a Client
 There are 2 different Client implementations available: `PlainClient` and `TLSClient`.
+```Java
+Client client = new PlainClient();
+```
+```Java
+Client client = new TLSClient();
+```
+A client fires events just like a Server does.
+```Java
+client.setClientListener(new PNetListener()
+{
+    @Override
+    public void onConnect(final Client c)
+    {
+        // Hello server!
+    }
 
+    @Override
+    public void onDisconnect(final Client c)
+    {
+        // Farewell
+    }
+
+    @Override
+    public void onReceive(final Packet p, final Client c) throws IOException
+    {
+        // Handle Packet?
+    }
+});
+```
+To connect, call the obvious method.
+```Java
+client.connect("localhost", 8080);
+```
+The same goes for closing the connection:
+```Java
+client.close();
+```
 
 ## Extra Client functionality
+PNet contains 2 classes which can simplify using Clients even more.
+1. AsyncClient
+2. AutoClient
+
+Any Client implementation can be passed to add functionality to.
+
+The `AsyncClient` adds asynchronous functionality to a Client.
+```Java
+AsyncClient asyncClient = new AsyncClient(new PlainClient());
+asyncClient.connectAsync("localhost", 8080, new AsyncListener()
+{
+    @Override
+    public void onCompletion(final boolean success)
+    {
+        // Success?
+    }
+});
+asyncClient.sendAsync(packet, new AsyncListener()
+{
+    @Override
+    public void onCompletion(final boolean success)
+    {
+        // Success?
+    }
+});
+```
+
+The `AutoClient` automatically connects to given host:port so you don't have to check if the Client is connected.
+```Java
+AutoClient autoClient = new AutoClient(new TLSClient(), "localhost", 8080);
+```
+
+*Note that these can be stacked!*
+```Java
+AsyncClient stackedClient = new AsyncClient(new AutoClient(new TLSClient(), "localhost", 8080));
+```
 
 ## Using TLS
 
