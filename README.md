@@ -1,5 +1,5 @@
 # PNet
-PNet is an easy to use networking framework for Java.
+PNet is an easy to use networking framework for Java 1.6 or higher.
 
 ## Features
   - Guaranteed data transfer using TCP
