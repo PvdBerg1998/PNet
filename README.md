@@ -168,6 +168,8 @@ These values can be set using the `TLS` helper class.
 ```Java
 TLS.setKeyStore("keystore.jks", "password");
 TLS.setTrustStore("truststore.ts", "password");
+
+// Enable debug output
 TLS.setSSLDebug();
 ```
 PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(https://github.com/PvdBerg1998/PNet/blob/master/src/nl/pvdberg/pnet/security/TLS.java)
