@@ -16,7 +16,7 @@ All data is sent using a `Packet`. These Packets are immutable and contain the f
 3. Data
 
 PacketType and Packet ID can be used to identify incoming Packets.
-Normally, you should **not** be creating Packets yourself.
+*Normally, you should not be creating Packets yourself.*
 
 ## Building Packets
 To create a Packet, use a `PacketBuilder`. This helper object contains several functions to allow easy creation of Packets.
@@ -27,6 +27,14 @@ Packet packet = new PacketBuilder(Packet.PacketType.Request)
                 .withBoolean(true)
                 .build();
 ```
+
+## Reading Packets
+Just like the `PacketBuilder`, there is a `PacketReader`.
+```Java
+PacketReader packetReader = new PacketReader(packet);
+int i = packetReader.readInt();
+```
+**The data of the Packet must be read in the same order as it was written!**
 
 ## Creating a Server
 There are 2 different Server implementations available: `PlainServer` and `TLSServer`.
@@ -59,8 +67,18 @@ server.setListener(new PNetListener()
     }
 });
 ```
+After this, the Server can be started.
+```Java
+server.start(port);
+```
+Ofcourse, the Server can also be stopped.
+```Java
+server.stop();
+```
 
 ## Creating a Client
+There are 2 different Client implementations available: `PlainClient` and `TLSClient`.
+
 
 ## Extra Client functionality
 
