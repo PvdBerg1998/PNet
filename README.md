@@ -15,6 +15,16 @@ The latest packages are available [here](https://github.com/PvdBerg1998/PNet/tre
 PNet is released under the [MIT license](https://choosealicense.com/licenses/mit/).
   
 # How to use
+- [Packets](#packets)
+- [Building Packets](#building-packets)
+- [Reading Packets](#reading-packets)
+- [Creating a Server](#creating-a-server)
+- [Creating a Client](#creating-a-client)
+- [Extra Client functionality](#extra-client-functionality)
+- [Using TLS](#using-tls)
+- [Using compression](#using-compression)
+- [Smarter Packet handling](#smarter-packet-handling)
+- [Multithreading Note](#multithreading-note)
   
 ## Packets
 All data is sent using a `Packet`. These Packets are immutable and contain the following fields:
@@ -199,5 +209,5 @@ packetDistributer.addHandler(anotherID, new anotherHandlerClass());
 ```
 A default handler can be set by using `packetDistributer.setDefaultHandler(PacketHandler)`.
 
-## Multithreading
+## Multithreading Note
 PNet uses a threadpool to handle all threading. All threads can be stopped using `ThreadManager.shutdown()`.
