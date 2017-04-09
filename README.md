@@ -10,6 +10,11 @@ PNet is an easy to use networking framework for Java.
   - Optimized
   - Universal logging using [SLF4J](https://www.slf4j.org/)
   
+# Download
+The latest packages are available [here](https://github.com/PvdBerg1998/PNet/tree/master/out/artifacts).
+  
+# How to use
+  
 ## Packets
 All data is sent using a `Packet`. These Packets are immutable and contain the following fields:
 1. PacketType (Request or Reply)
