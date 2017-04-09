@@ -149,10 +149,17 @@ The `AutoClient` automatically connects to given host:port so you don't have to 
 AutoClient autoClient = new AutoClient(new TLSClient(), "localhost", 8080);
 ```
 
-*Note that these can be stacked!*
+*These implementations can be stacked!*
 ```Java
 AsyncClient stackedClient = new AsyncClient(new AutoClient(new TLSClient(), "localhost", 8080));
 ```
+By stacking these implementations, you now have an asynchronous automatically connecting Client.
+Note that order is important.
+```Java
+AutoClient invalid = new AutoClient(new AsyncClient(new TLSClient()), "localhost", 8080);
+```
+In this example, the `AutoClient` will call the default `connect` and `send`, which will render the `AsyncClient` completely useless.
+If used correctly, the `AsyncClient` will expose `connectAsync` and `sendAsync`, which will call `connect` and `sync` from the `AutoClient` asynchronously.
 
 ## Using TLS
 
