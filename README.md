@@ -13,7 +13,7 @@ PNet is an easy to use networking framework for Java.
 ---
   
 # Download
-The latest packages are available [here](https://github.com/PvdBerg1998/PNet/tree/master/out/artifacts).
+Download available here (coming soon).
 PNet is released under the [MIT license](LICENSE.md).
   
 # How to use
