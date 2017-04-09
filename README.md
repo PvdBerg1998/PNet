@@ -149,12 +149,13 @@ The `AutoClient` automatically connects to given host:port so you don't have to 
 AutoClient autoClient = new AutoClient(new TLSClient(), "localhost", 8080);
 ```
 
-*These implementations can be stacked!*
+These implementations can be stacked.
 ```Java
 AsyncClient stackedClient = new AsyncClient(new AutoClient(new TLSClient(), "localhost", 8080));
 ```
 By stacking these implementations, you now have an asynchronous automatically connecting Client.
-Note that order is important.
+
+**Note that order is important.**
 ```Java
 AutoClient invalid = new AutoClient(new AsyncClient(new TLSClient()), "localhost", 8080);
 ```
@@ -162,5 +163,44 @@ In this example, the `AutoClient` will call the default `connect` and `send`, wh
 If used correctly, the `AsyncClient` will expose `connectAsync` and `sendAsync`, which will call `connect` and `sync` from the `AutoClient` asynchronously.
 
 ## Using TLS
+When using `TLSServer`, a key store is required. When using `TLSClient`, a trust store is required.
+These values can be set using the `TLS` helper class.
+```Java
+TLS.setKeyStore("keystore.jks", "password");
+TLS.setTrustStore("truststore.ts", "password");
+TLS.setSSLDebug();
+```
+PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(https://github.com/PvdBerg1998/PNet/blob/master/src/nl/pvdberg/pnet/security/TLS.java)
 
 ## Using compression
+To compress a Packet, use the `PacketCompressor` helper class.
+```Java
+Packet compressed = PacketCompressor.compress(packet);
+Packet decompressed = PacketCompressor.decompress(packet);
+```
+
+## Smarter Packet handling
+A common mistake people make is to handle all different Packets in the main `onReceive` event handler. When handling various Packets with various Packet IDs, make sure to use a `PacketDistributer`. A `pNetListener` implementation is available to link your distributer to your Client or Server.
+```Java
+PacketDistributer packetDistributer = new PacketDistributer();
+client.setClientListener(new DistributerListener(packetDistributer));
+server.setListener(new DistributerListener(packetDistributer));
+```
+For each Packet ID you want to handle, add a `PacketHandler` implementation.
+```Java
+short someID = 666;
+packetDistributer.addHandler(someID, new PacketHandler()
+{
+    @Override
+    public void handlePacket(final Packet p, final Client c) throws IOException
+    {
+        // Handle this evil Packet for me please
+    }
+});
+```
+Even better: separate all the handlers into their own class.
+```Java
+short anotherID = 123;
+packetDistributer.addHandler(anotherID, new anotherHandlerClass());
+```
+A default handler can be set by using `packetDistributer.setDefaultHandler`.
