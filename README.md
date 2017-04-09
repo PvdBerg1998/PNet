@@ -10,6 +10,8 @@ PNet is an easy to use networking framework for Java.
   - Optimized
   - Universal logging using [SLF4J](https://www.slf4j.org/)
   
+---
+  
 # Download
 The latest packages are available [here](https://github.com/PvdBerg1998/PNet/tree/master/out/artifacts).
 PNet is released under the [MIT license](https://choosealicense.com/licenses/mit/).
@@ -25,6 +27,8 @@ PNet is released under the [MIT license](https://choosealicense.com/licenses/mit
 - [Using compression](#using-compression)
 - [Smarter Packet handling](#smarter-packet-handling)
 - [Multithreading Note](#multithreading-note)
+
+---
   
 ## Packets
 All data is sent using a `Packet`. These Packets are immutable and contain the following fields:
@@ -52,6 +56,8 @@ PacketReader packetReader = new PacketReader(packet);
 int i = packetReader.readInt();
 ```
 **The data of the Packet must be read in the same order as it was written!**
+
+---
 
 ## Creating a Server
 There are 2 different Server implementations available: `PlainServer` and `TLSServer`.
@@ -85,6 +91,8 @@ server.setListener(new PNetListener()
 });
 ```
 The Server can be started: `server.start(port)` and stopped `server.stop()`.
+
+---
 
 ## Creating a Client
 There are 2 different Client implementations available: `PlainClient` and `TLSClient`.
@@ -165,6 +173,8 @@ AutoClient invalid = new AutoClient(new AsyncClient(new TLSClient()), "localhost
 In this example, the `AutoClient` will call the default `connect` and `send`, which will render the `AsyncClient` completely useless.
 If used correctly, the `AsyncClient` will expose `connectAsync` and `sendAsync`, which will call `connect` and `sync` from the `AutoClient` asynchronously.
 
+---
+
 ## Using TLS
 When using `TLSServer`, a key store is required. When using `TLSClient`, a trust store is required.
 These values can be set using the `TLS` helper class.
@@ -182,6 +192,8 @@ To compress a Packet, use the `PacketCompressor` helper class.
 Packet compressed = PacketCompressor.compress(packet);
 Packet decompressed = PacketCompressor.decompress(packet);
 ```
+
+---
 
 ## Smarter Packet handling
 A common mistake people make is to handle all different Packets in the main `onReceive` event handler. When handling various Packets with various Packet IDs, make sure to use a `PacketDistributer`. A `pNetListener` implementation is available to link your distributer to your Client or Server.
@@ -208,6 +220,8 @@ short anotherID = 123;
 packetDistributer.addHandler(anotherID, new anotherHandlerClass());
 ```
 A default handler can be set by using `packetDistributer.setDefaultHandler(PacketHandler)`.
+
+---
 
 ## Multithreading Note
 PNet uses a threadpool to handle all threading. All threads can be stopped using `ThreadManager.shutdown()`.
