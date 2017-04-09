@@ -42,7 +42,7 @@ PacketType and Packet ID can be used to identify incoming Packets.
 *Normally, you should not be creating Packets yourself.*
 
 ## Building Packets
-To create a Packet, use a `PacketBuilder`. This helper object contains several functions to allow easy creation of Packets.
+To create a Packet, use a `PacketBuilder`. This helper object contains several methods to allow easy creation of Packets.
 ```Java
 Packet packet = new PacketBuilder(Packet.PacketType.Request)
                 .withInt(99)
