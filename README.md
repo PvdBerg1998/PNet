@@ -8,6 +8,7 @@ PNet is an easy to use networking framework for Java.
   - Asynchronous
   - Completely thread safe
   - Optimized
+  - Universal logging using [SLF4J](https://www.slf4j.org/)
   
 ## Packets
 All data is sent using a `Packet`. These Packets are immutable and contain the following fields:
@@ -67,14 +68,7 @@ server.setListener(new PNetListener()
     }
 });
 ```
-After this, the Server can be started.
-```Java
-server.start(port);
-```
-Ofcourse, the Server can also be stopped.
-```Java
-server.stop();
-```
+The Server can be started: `server.start(port)` and stopped `server.stop()`.
 
 ## Creating a Client
 There are 2 different Client implementations available: `PlainClient` and `TLSClient`.
@@ -107,14 +101,7 @@ client.setClientListener(new PNetListener()
     }
 });
 ```
-To connect, call the obvious method.
-```Java
-client.connect("localhost", 8080);
-```
-The same goes for closing the connection:
-```Java
-client.close();
-```
+Use `connect(host, port)` to connect, and `client.close()` to disconnect.
 
 ## Extra Client functionality
 PNet contains 2 classes which can simplify using Clients even more.
@@ -168,10 +155,9 @@ These values can be set using the `TLS` helper class.
 ```Java
 TLS.setKeyStore("keystore.jks", "password");
 TLS.setTrustStore("truststore.ts", "password");
-
-// Enable debug output
-TLS.setSSLDebug();
 ```
+SSL debug output can be turned on by calling `TLS.setSSLDebug()`.
+
 PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(https://github.com/PvdBerg1998/PNet/blob/master/src/nl/pvdberg/pnet/security/TLS.java)
 
 ## Using compression
@@ -205,4 +191,7 @@ Even better: separate all the handlers into their own class.
 short anotherID = 123;
 packetDistributer.addHandler(anotherID, new anotherHandlerClass());
 ```
-A default handler can be set by using `packetDistributer.setDefaultHandler`.
+A default handler can be set by using `packetDistributer.setDefaultHandler(PacketHandler)`.
+
+## Multithreading
+PNet uses a threadpool to handle all threading. All threads can be stopped using `ThreadManager.shutdown()`.
