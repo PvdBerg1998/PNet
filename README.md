@@ -184,7 +184,7 @@ TLS.setTrustStore("truststore.ts", "password");
 ```
 SSL debug output can be turned on by calling `TLS.setSSLDebug()`.
 
-PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(PNet/src/nl/pvdberg/pnet/security/TLS.java)
+PNet is configured to use the latest, most secure TLS protocols and cipher suites available. See [TLS.java].(TLS.java)
 
 ## Using compression
 To compress a Packet, use the `PacketCompressor` helper class.
