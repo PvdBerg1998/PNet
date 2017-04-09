@@ -7,7 +7,7 @@
 
 *.ts
 
-out/production/
+out/
 
 PNet\.iml
 
