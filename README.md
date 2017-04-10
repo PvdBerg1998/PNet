@@ -226,4 +226,4 @@ A default handler can be set by using `packetDistributer.setDefaultHandler(Packe
 ---
 
 ## Multithreading Note
-PNet uses a threadpool to handle all threading. All threads can be stopped using `ThreadManager.shutdown()`.
+PNet uses a threadpool to handle all threading. If your application needs to shut down immediately, this can be done by killing all threads using `ThreadManager.shutdown()`.
