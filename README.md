@@ -7,7 +7,7 @@ PNet is an easy to use networking framework for Java 1.6 or higher.
   - Support for GZIP compression
   - Asynchronous
   - Completely thread safe
-  - Optimized
+  - Optimized, see [benchmarks](https://github.com/PvdBerg1998/PNet/wiki/Benchmarks)
   - Universal logging using [SLF4J](https://www.slf4j.org/)
   
 ---
