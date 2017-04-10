@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package test.nl.pvdberg.pnet;
+package test.nl.pvdberg.pnet.client.util;
 
 import main.nl.pvdberg.pnet.client.Client;
 import main.nl.pvdberg.pnet.client.util.PlainClient;
@@ -36,72 +36,44 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 
-public class BenchmarkTest
+public class PlainClientTest
 {
     private static final int port = 123;
 
     private Server server;
     private Client client;
-    private long start;
-    private long end;
 
     @Before
-    public void setup() throws Exception
+    public void setUp() throws Exception
     {
         server = new PlainServer();
-        server.start(port);
-
+        assertTrue(server.start(123));
         client = new PlainClient();
-        client.connect("localhost", port);
     }
 
     @After
-    public void teardown() throws Exception
+    public void tearDown() throws Exception
     {
         server.stop();
         client.close();
     }
 
     @Test
-    public void testEmptyPacketsPerSecond() throws Exception
+    public void connect() throws Exception
     {
-        final int amount = 1000;
-
-        final Packet packet = new PacketBuilder(Packet.PacketType.Request).build();
-
-        server.setListener(new ReceiveListener()
-        {
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                assertEquals(Packet.PacketType.Request.ordinal(), p.getPacketType().ordinal());
-            }
-        });
-
-        start = System.nanoTime();
-        for (int i = 0; i < amount; i++)
-        {
-            assertTrue(client.send(packet));
-        }
-        end = System.nanoTime();
-
-        System.out.println(amount / ((end - start) / 1000000000f) + " packets per second");
+        assertTrue(client.connect("localhost", port));
     }
 
     @Test
-    public void testMBPerSecond() throws Exception
+    public void send() throws Exception
     {
-        final int amount = 1000;
-
-        final byte[] randomData = new byte[50000];
-        new Random().nextBytes(randomData);
-
+        final CountDownLatch latch = new CountDownLatch(1);
         final Packet packet = new PacketBuilder(Packet.PacketType.Request)
-                .withBytes(randomData)
+                .withString("hello send test")
                 .build();
 
         server.setListener(new ReceiveListener()
@@ -109,18 +81,14 @@ public class BenchmarkTest
             @Override
             public void onReceive(final Packet p, final Client c) throws IOException
             {
-                //assertArrayEquals(randomData, p.getData());
-                assertEquals(randomData.length, p.getData().length);
+                latch.countDown();
+                assertArrayEquals(packet.getData(), p.getData());
             }
         });
 
-        start = System.nanoTime();
-        for (int i = 0; i < amount; i++)
-        {
-            assertTrue(client.send(packet));
-        }
-        end = System.nanoTime();
+        assertTrue(client.connect("localhost", port));
+        assertTrue(client.send(packet));
 
-        System.out.println((randomData.length / 1000000f * amount) / ((end - start) / 1000000000f) + " MB per second");
+        latch.await();
     }
 }
