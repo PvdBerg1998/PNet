@@ -59,7 +59,6 @@ public class PlainClientTest
     public void tearDown() throws Exception
     {
         server.stop();
-        client.close();
     }
 
     @Test
@@ -69,6 +68,13 @@ public class PlainClientTest
     }
 
     @Test
+    public void nonConnectedSend() throws Exception
+    {
+        final Packet packet = new PacketBuilder(Packet.PacketType.Request).build();
+        assertFalse(client.send(packet));
+    }
+
+    @Test(timeout=1000)
     public void send() throws Exception
     {
         final CountDownLatch latch = new CountDownLatch(1);

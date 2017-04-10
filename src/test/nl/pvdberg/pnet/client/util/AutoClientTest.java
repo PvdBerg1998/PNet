@@ -22,9 +22,10 @@
  * SOFTWARE.
  */
 
-package test.nl.pvdberg.pnet;
+package test.nl.pvdberg.pnet.client.util;
 
 import main.nl.pvdberg.pnet.client.Client;
+import main.nl.pvdberg.pnet.client.util.AutoClient;
 import main.nl.pvdberg.pnet.client.util.PlainClient;
 import main.nl.pvdberg.pnet.event.ReceiveListener;
 import main.nl.pvdberg.pnet.packet.Packet;
@@ -36,90 +37,51 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Random;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.*;
 
-public class BenchmarkTest
+public class AutoClientTest
 {
     private static final int port = 123;
 
     private Server server;
     private Client client;
-    private long start;
-    private long end;
 
     @Before
-    public void setup() throws Exception
+    public void setUp() throws Exception
     {
         server = new PlainServer();
         server.start(port);
 
-        client = new PlainClient();
-        client.connect("localhost", port);
+        client = new AutoClient(new PlainClient(), "localhost", port);
     }
 
     @After
-    public void teardown() throws Exception
+    public void tearDown() throws Exception
     {
         server.stop();
     }
 
-    @Test
-    public void testEmptyPacketsPerSecond() throws Exception
+    @Test(timeout=1000)
+    public void send() throws Exception
     {
-        final int amount = 1000;
+        final CountDownLatch latch = new CountDownLatch(1);
+
+        assertFalse(client.isConnected());
+
+        server.setListener(new ReceiveListener()
+        {
+            @Override
+            public void onReceive(final Packet p, final Client c) throws IOException
+            {
+                latch.countDown();
+            }
+        });
 
         final Packet packet = new PacketBuilder(Packet.PacketType.Request).build();
+        assertTrue(client.send(packet));
 
-        server.setListener(new ReceiveListener()
-        {
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                assertEquals(Packet.PacketType.Request.ordinal(), p.getPacketType().ordinal());
-            }
-        });
-
-        start = System.nanoTime();
-        for (int i = 0; i < amount; i++)
-        {
-            assertTrue(client.send(packet));
-        }
-        end = System.nanoTime();
-
-        System.out.println(amount / ((end - start) / 1000000000f) + " packets per second");
-    }
-
-    @Test
-    public void testMBPerSecond() throws Exception
-    {
-        final int amount = 1000;
-
-        final byte[] randomData = new byte[50000];
-        new Random().nextBytes(randomData);
-
-        final Packet packet = new PacketBuilder(Packet.PacketType.Request)
-                .withBytes(randomData)
-                .build();
-
-        server.setListener(new ReceiveListener()
-        {
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                //assertArrayEquals(randomData, p.getData());
-                assertEquals(randomData.length, p.getData().length);
-            }
-        });
-
-        start = System.nanoTime();
-        for (int i = 0; i < amount; i++)
-        {
-            assertTrue(client.send(packet));
-        }
-        end = System.nanoTime();
-
-        System.out.println((randomData.length / 1000000f * amount) / ((end - start) / 1000000000f) + " MB per second");
+        latch.await();
     }
 }
