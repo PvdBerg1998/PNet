@@ -10,7 +10,7 @@ PNet is an easy to use network library for Java 1.6 or higher.
 - Optimized, see [benchmarks](https://github.com/PvdBerg1998/PNet/wiki/Benchmarks)
 - Universal logging using [SLF4J](https://www.slf4j.org/)
 
-## Known issues:
+## Known ~issues~ flaws:
 - No method to set individual key- and truststores per TLSClient or TLSServer
   
 ---
