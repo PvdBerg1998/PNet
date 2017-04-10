@@ -123,7 +123,7 @@ public class Packet
         out.writeShort(packetID);
 
         // Data Length
-        out.writeShort(dataLength);
+        out.writeInt(dataLength);
 
         // Data
         out.write(data);
@@ -144,7 +144,7 @@ public class Packet
         final short packetID = in.readShort();
 
         // Data Length
-        final int dataLength = in.readShort();
+        final int dataLength = in.readInt();
 
         // Data
         final byte[] data = new byte[dataLength];
