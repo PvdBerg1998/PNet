@@ -24,19 +24,30 @@
 
 package test.nl.pvdberg.pnet.benchmark;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import main.nl.pvdberg.pnet.server.Server;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class Benchmark
 {
-    @BeforeClass
-    public static void setup() throws Exception
+    public Server server;
+    public 
+
+    @Before
+    public void setup() throws Exception
     {
 
     }
 
-    @AfterClass
-    public static void stop() throws Exception
+    @After
+    public void teardown() throws Exception
+    {
+
+    }
+
+    @Test
+    public void testPacketsPerSecond() throws Exception
     {
 
     }
