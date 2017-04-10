@@ -2,13 +2,16 @@
 PNet is an easy to use network library for Java 1.6 or higher.
 
 ## Features
-  - Guaranteed data transfer using TCP
-  - Safe transfer using TLS
-  - Support for GZIP compression
-  - Asynchronous
-  - Completely thread safe
-  - Optimized, see [benchmarks](https://github.com/PvdBerg1998/PNet/wiki/Benchmarks)
-  - Universal logging using [SLF4J](https://www.slf4j.org/)
+- Guaranteed data transfer using TCP
+- Safe transfer using TLS
+- Support for GZIP compression
+- Asynchronous
+- Completely thread safe
+- Optimized, see [benchmarks](https://github.com/PvdBerg1998/PNet/wiki/Benchmarks)
+- Universal logging using [SLF4J](https://www.slf4j.org/)
+
+## Known issues:
+- No method to set individual key- and truststores per TLSClient or TLSServer
   
 ---
   
