@@ -39,9 +39,9 @@ public interface Server
     /**
      * Starts the server at given port
      * @param port Port to listen to
-     * @throws IOException when unable to open socket
+     * @return Successful
      */
-    void start(int port) throws IOException;
+    boolean start(int port);
 
     /**
      * Closes all sockets and stops the acceptor thread
