@@ -73,10 +73,18 @@ public class ServerImpl implements Server
     }
 
     @Override
-    public synchronized void start(final int port) throws IOException
+    public synchronized boolean start(final int port)
     {
         logger.debug("Starting server");
-        server = ssf.getServerSocket(port);
+
+        try
+        {
+            server = ssf.getServerSocket(port);
+        }
+        catch (final IOException e)
+        {
+            return false;
+        }
 
         logger.debug("Starting thread");
         launchThread(new Runnable()
@@ -87,6 +95,8 @@ public class ServerImpl implements Server
                 acceptorThreadImpl();
             }
         });
+
+        return true;
     }
 
     private void acceptorThreadImpl()

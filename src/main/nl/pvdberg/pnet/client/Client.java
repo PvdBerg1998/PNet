@@ -42,6 +42,7 @@ public interface Client
     /**
      * Connects to given host:port
      * @throws IllegalStateException when Client is not closed
+     * @return Successful
      */
     boolean connect(final String host, final int port);
 

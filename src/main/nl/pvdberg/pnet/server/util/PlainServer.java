@@ -73,9 +73,9 @@ public class PlainServer implements Server
     }
 
     @Override
-    public void start(final int port) throws IOException
+    public boolean start(final int port)
     {
-        server.start(port);
+        return server.start(port);
     }
 
     @Override
