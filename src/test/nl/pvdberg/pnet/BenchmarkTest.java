@@ -63,18 +63,16 @@ public class BenchmarkTest
     @After
     public void teardown() throws Exception
     {
-        client.close();
         server.stop();
-        //ThreadManager.shutdown();
+        client.close();
     }
 
     @Test
-    public void testPacketsPerSecond() throws Exception
+    public void testEmptyPacketsPerSecond() throws Exception
     {
         final int amount = 100000;
 
         final Packet packet = new PacketBuilder(Packet.PacketType.Request)
-                .withInt(123)
                 .build();
 
         server.setListener(new ReceiveListener()
@@ -82,7 +80,7 @@ public class BenchmarkTest
             @Override
             public void onReceive(final Packet p, final Client c) throws IOException
             {
-                assertEquals(123, new PacketReader(p).readInt());
+                assertEquals(Packet.PacketType.Request.ordinal(), p.getPacketType().ordinal());
             }
         });
 
@@ -101,7 +99,7 @@ public class BenchmarkTest
     {
         final int amount = 100000;
 
-        final byte[] randomData = new byte[8000]; // 8 MB
+        final byte[] randomData = new byte[48000];
         new Random().nextBytes(randomData);
 
         final Packet packet = new PacketBuilder(Packet.PacketType.Request)
@@ -113,7 +111,7 @@ public class BenchmarkTest
             @Override
             public void onReceive(final Packet p, final Client c) throws IOException
             {
-                assertEquals(randomData, p.getData());
+                assertEquals(randomData.length, p.getData().length);
             }
         });
 
@@ -124,6 +122,6 @@ public class BenchmarkTest
         }
         end = System.currentTimeMillis();
 
-        System.out.println((randomData.length / 1000f * amount) / ((end - start) / 1000f) + " MB per second");
+        System.out.println((randomData.length / 1000000f * amount) / ((end - start) / 1000f) + " MB per second");
     }
 }
