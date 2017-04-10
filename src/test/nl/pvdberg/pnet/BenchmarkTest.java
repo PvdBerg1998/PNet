@@ -43,8 +43,8 @@ import static org.junit.Assert.*;
 public class BenchmarkTest
 {
     private static final int port = 123;
-    private static final float bytesToMB = 1000000f;
-    private static final float nanoToSeconds = 1000000000f;
+    private static final float invMega = 1/1000000f;
+    private static final float invNano = 1/1000000000f;
 
     private Server server;
     private Client client;
@@ -90,7 +90,7 @@ public class BenchmarkTest
         }
         end = System.nanoTime();
 
-        System.out.println(amount / ((end - start) / nanoToSeconds) + " packets per second");
+        System.out.println(amount / ((end - start) * invNano) + " packets per second");
     }
 
     @Test
@@ -122,6 +122,6 @@ public class BenchmarkTest
         }
         end = System.nanoTime();
 
-        System.out.println((randomData.length / bytesToMB * amount) / ((end - start) / nanoToSeconds) + " MB per second");
+        System.out.println((randomData.length * invMega * amount) / ((end - start) * invNano) + " MB per second");
     }
 }
