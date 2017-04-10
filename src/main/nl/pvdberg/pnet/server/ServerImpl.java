@@ -162,18 +162,7 @@ public class ServerImpl implements Server
     @Override
     public synchronized void stop()
     {
-        if (server.isClosed()) return;
         logger.info("Stopping server");
-
-        try
-        {
-            server.close();
-            logger.debug("ServerSocket closed");
-        }
-        catch (final IOException e)
-        {
-            logger.error("Unable to close server: {} : {}", e.getClass(), e.getMessage());
-        }
 
         synchronized (clients)
         {
@@ -185,6 +174,17 @@ public class ServerImpl implements Server
                 client.close();
             }
             clients.clear();
+        }
+
+        if (server == null) return;
+        try
+        {
+            server.close();
+            logger.debug("ServerSocket closed");
+        }
+        catch (final Exception e)
+        {
+            logger.error("Unable to close server: {} : {}", e.getClass(), e.getMessage());
         }
     }
 }
