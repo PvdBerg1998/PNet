@@ -3,20 +3,40 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>nl.pvdberg.pnet</groupId>
+    <groupId>com.github.pvdberg1998</groupId>
     <artifactId>pnet</artifactId>
     <version>1.1.0</version>
-    <name>PNet</name>
     <packaging>jar</packaging>
-    <url>https://github.com/PvdBerg1998/PNet</url>
+
+    <name>PNet</name>
+    <description>High level Java network library</description>
+    <url>http://maven.apache.org</url>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>https://raw.githubusercontent.com/PvdBerg1998/PNet/master/LICENSE.md</url>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
+
+    <developers>
+        <developer>
+            <name>Pim van den Berg</name>
+            <organizationUrl>https://github.com/PvdBerg1998/PNet</organizationUrl>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>Github Issues</system>
+        <url>https://github.com/PvdBerg1998/PNet/issues</url>
+    </issueManagement>
+
+    <scm>
+        <connection>scm:git:git://github.com/PvdBerg1998/PNet.git</connection>
+        <developerConnection>scm:git:ssh://github.com:PvdBerg1998/PNet.git</developerConnection>
+        <url>http://github.com/PvdBerg1998/PNet/tree/master</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -40,4 +60,17 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>pnet</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>pnet</id>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+
 </project>
