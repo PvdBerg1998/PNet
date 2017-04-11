@@ -5,7 +5,7 @@
 
     <groupId>pnet</groupId>
     <artifactId>pnet</artifactId>
-    <version>0.1.0-SNPASHOT</version>
+    <version>1.1.0</version>
     <name>PNet</name>
     <packaging>jar</packaging>
 
