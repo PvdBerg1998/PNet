@@ -6,22 +6,12 @@ repositories {
 
 version='1.1.0'
 group='com.github.pvdberg1998'
-name='PNet'
 description='High level Java network library'
-
-contacts {
-    'Pim van den Berg' {
-        moniker 'Pim van den Berg'
-        github 'PvdBerg1998'
-    }
-}
-
 sourceCompatibility=1.6
 targetCompatibility=1.6
 
 dependencies {
     compile "org.slf4j:slf4j-api:$slf4jVersion"
 
-    testCompile 'junit:junit:$junitVersion'
+    testCompile "junit:junit:$junitVersion"
 }
-
