@@ -1,12 +1,7 @@
-
-\.idea/
-
+.idea/
 *.cer
-
 *.jks
-
 *.ts
-
 out/
-
-PNet\.iml
+*.iml
+target/
