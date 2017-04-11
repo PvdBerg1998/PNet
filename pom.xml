@@ -3,11 +3,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pnet</groupId>
+    <groupId>nl.pvdberg.pnet</groupId>
     <artifactId>pnet</artifactId>
     <version>1.1.0</version>
     <name>PNet</name>
     <packaging>jar</packaging>
+    <url>https://github.com/PvdBerg1998/PNet</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://raw.githubusercontent.com/PvdBerg1998/PNet/master/LICENSE.md</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
