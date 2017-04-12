@@ -6,3 +6,7 @@ out/
 *.iml
 target/
 settings\.xml
+gradle
+gradlew
+.gradle/
+build/
