@@ -105,7 +105,7 @@ There are 2 different Client implementations available: `PlainClient` and `TLSCl
 Client client = new PlainClient();
 ```
 ```Java
-Client client = new TLSClient();
+Client client = new TLSClient(trustStoreStream, trustStorePassword, trustStoreType);
 ```
 A client fires events just like a Server does.
 ```Java
