@@ -1,7 +1,4 @@
 .idea/
-*.cer
-*.jks
-*.ts
 out/
 *.iml
 target/

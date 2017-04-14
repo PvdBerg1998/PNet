@@ -81,8 +81,9 @@ public class ServerImpl implements Server
         {
             server = ssf.getServerSocket(port);
         }
-        catch (final IOException e)
+        catch (final Exception e)
         {
+            logger.error("Unable to start server: {} : {}", e.getClass(), e.getMessage());
             return false;
         }
 

@@ -41,10 +41,10 @@ import static org.junit.Assert.*;
 
 public class PlainClientTest
 {
-    private static final int port = 42365;
+    protected static final int port = 42365;
 
-    private Server server;
-    private Client client;
+    protected Server server;
+    protected Client client;
 
     @Before
     public void setUp() throws Exception

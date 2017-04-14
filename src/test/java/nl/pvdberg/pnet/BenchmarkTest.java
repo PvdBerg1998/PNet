@@ -42,14 +42,14 @@ import static org.junit.Assert.*;
 
 public class BenchmarkTest
 {
-    private static final int port = 42365;
-    private static final float invMega = 1/1000000f;
-    private static final float invNano = 1/1000000000f;
+    protected static final int port = 42365;
+    protected static final float invMega = 1/1000000f;
+    protected static final float invNano = 1/1000000000f;
 
-    private Server server;
-    private Client client;
-    private long start;
-    private long end;
+    protected Server server;
+    protected Client client;
+    protected long start;
+    protected long end;
 
     @Before
     public void setup() throws Exception

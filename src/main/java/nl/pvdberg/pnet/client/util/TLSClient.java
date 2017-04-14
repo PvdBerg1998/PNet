@@ -33,6 +33,7 @@ import nl.pvdberg.pnet.security.TLS;
 
 import javax.net.ssl.SSLSocket;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
@@ -43,7 +44,7 @@ public class TLSClient implements Client
     private SSLSocket sslSocket;
 
     /**
-     * Creates a new Client using TLS. Requires trustStore to be set, see {@link nl.pvdberg.pnet.security.TLS#setTrustStore(String, String)}
+     * Creates a new Client using TLS with default trust store
      */
     public TLSClient()
     {
@@ -51,9 +52,27 @@ public class TLSClient implements Client
                 new SocketFactory()
                 {
                     @Override
-                    public Socket getSocket(final String host, final int port) throws IOException
+                    public Socket getSocket(final String host, final int port) throws Exception
                     {
                         return TLS.createTLSSocket(host, port);
+                    }
+                }
+        );
+    }
+
+    /**
+     * Creates a new Client using TLS with given trust store
+     * @see nl.pvdberg.pnet.security.TLS#createTLSSocket(String, int, InputStream, char[], String)
+     */
+    public TLSClient(final InputStream trustStoreStream, final char[] trustStorePassword, final String trustStoreType)
+    {
+        client = new ClientImpl(
+                new SocketFactory()
+                {
+                    @Override
+                    public Socket getSocket(final String host, final int port) throws Exception
+                    {
+                        return TLS.createTLSSocket(host, port, trustStoreStream, trustStorePassword, trustStoreType);
                     }
                 }
         );

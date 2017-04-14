@@ -79,7 +79,7 @@ public class ClientImpl implements Client
             logger.debug("Connected");
             return true;
         }
-        catch (final IOException e)
+        catch (final Exception e)
         {
             logger.error("Unable to connect: {} : {}", e.getClass(), e.getMessage());
             return false;

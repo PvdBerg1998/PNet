@@ -34,11 +34,11 @@ import static org.junit.Assert.assertTrue;
 
 public class PlainServerTest
 {
-    private static final int port1 = 42365;
-    private static final int port2 = 42366;
+    protected static final int port1 = 42365;
+    protected static final int port2 = 42366;
 
-    private Server server1;
-    private Server server2;
+    protected Server server1;
+    protected Server server2;
 
     @Before
     public void setUp() throws Exception

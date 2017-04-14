@@ -24,10 +24,9 @@
 
 package nl.pvdberg.pnet.factory;
 
-import java.io.IOException;
 import java.net.Socket;
 
 public interface SocketFactory
 {
-    Socket getSocket(final String host, final int port) throws IOException;
+    Socket getSocket(final String host, final int port) throws Exception;
 }
