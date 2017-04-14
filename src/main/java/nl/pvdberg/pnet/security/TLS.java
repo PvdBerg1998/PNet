@@ -42,12 +42,12 @@ public class TLS
     /**
      * Strong TLS protocols
      */
-    public static final String[] TLS_PROTOCOLS = { "TLSv1.2", "TLSv1.1" };
+    private static final String[] TLS_PROTOCOLS = { "TLSv1.2", "TLSv1.1" };
 
     /**
      * Strong cipher suites (best to worst)
      */
-    public static final String[] TLC_CIPHER_SUITES =
+    private static final String[] TLC_CIPHER_SUITES =
             {
                     "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
                     "TLS_DHE_RSA_WITH_CHACHA20_POLY1305",
@@ -66,7 +66,7 @@ public class TLS
      * Returns intersection of available and supported
      * @return Intersection of available and supported
      */
-    public static String[] getUsable(final String[] available, final String[] supported)
+    private static String[] getUsable(final String[] available, final String[] supported)
     {
         final List<String> filtered = new ArrayList<String>(available.length);
         final List<String> supportedList = Arrays.asList(supported);
