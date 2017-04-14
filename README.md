@@ -10,8 +10,8 @@ PNet is an easy to use network library for Java 1.6 or higher.
 - Optimized, see [benchmarks](https://github.com/PvdBerg1998/PNet/wiki/Benchmarks)
 - Universal logging using [SLF4J](https://www.slf4j.org/)
 
-## Known ~issues~ flaws:
-- No method to set individual key- and truststores per TLSClient or TLSServer
+## Known issues:
+- None
   
 ---
   
@@ -70,7 +70,7 @@ There are 2 different Server implementations available: `PlainServer` and `TLSSe
 Server server = new PlainServer();
 ```
 ```Java
-Server server = new TLSServer();
+Server server = new TLSServer(keyStoreStream, keyStorePassword, keyStoreType);
 ```
 To use a Server, you might want to add a `PNetListener` to catch events.
 ```Java
@@ -182,12 +182,26 @@ If used correctly, the `AsyncClient` will expose `connectAsync` and `sendAsync`,
 
 ## Using TLS
 When using `TLSServer`, a key store is required. When using `TLSClient`, a trust store is required.
-These values can be set using the `TLS` helper class.
 ```Java
-TLS.setKeyStore("keystore.jks", "password");
-TLS.setTrustStore("truststore.ts", "password");
+server = new TLSServer(
+                keyStoreStream,
+                keyStorePassword,
+                keyStoreType
+);
+client = new TLSClient(
+                trustStoreStream,
+                trustStorePassword,
+                trustStoreType
+);
 ```
 SSL debug output can be turned on by calling `TLS.setSSLDebug()`.
+
+To get up and running quickly, I recommend using [Portecle](http://portecle.sourceforge.net/).
+1. Create a new PKCS12 keystore (your keystore)
+2. Generate a keypair
+3. Export head certificate
+4. Create a new PKCS12 keystore (your truststore)
+5. Import the exported certificate
 
 PNet is configured to use the latest, most secure TLS protocols and cipher suites available.
 
