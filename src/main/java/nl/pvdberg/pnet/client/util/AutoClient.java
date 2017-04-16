@@ -73,10 +73,17 @@ public class AutoClient implements Client
         {
             logger.debug("Auto connecting");
             if (!client.connect(host, port)) return false;
-            if (onReconnect != null) onReconnect.run();
         }
 
         return client.send(packet);
+    }
+
+    @Override
+    public boolean connect(final String host, final int port)
+    {
+        final boolean connected = client.connect(host, port);
+        if (connected && onReconnect != null) onReconnect.run();
+        return connected;
     }
 
     /**
@@ -101,12 +108,6 @@ public class AutoClient implements Client
     public void setClientListener(final PNetListener clientListener)
     {
         client.setClientListener(clientListener);
-    }
-
-    @Override
-    public boolean connect(final String host, final int port)
-    {
-        return client.connect(host, port);
     }
 
     @Override
