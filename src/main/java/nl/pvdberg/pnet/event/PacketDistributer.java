@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class PacketDistributer
 {
+    private PacketDistributer globalHandler;
     private PacketHandler defaultHandler;
     private final Map<Short, PacketHandler> registry;
 
@@ -45,19 +46,13 @@ public class PacketDistributer
     }
 
     /**
-     * Sets handler for Packet ID's without custom handler
-     */
-    public synchronized void setDefaultHandler(final PacketHandler defaultHandler)
-    {
-        this.defaultHandler = defaultHandler;
-    }
-
-    /**
      * Calls specified handler for Packet ID, or the default handler (if set)
      * @param packet New incoming Packet
      */
     public synchronized void onReceive(final Packet packet, final Client client) throws IOException
     {
+        if (globalHandler != null) globalHandler.onReceive(packet, client);
+
         final PacketHandler packetHandler = registry.get(packet.getPacketID());
         if (packetHandler == null)
         {
@@ -95,5 +90,32 @@ public class PacketDistributer
     public synchronized void clearHandlers()
     {
         registry.clear();
+    }
+
+    /**
+     * Sets handler for Packet ID's without custom handler
+     * @param defaultHandler Nullable Packet handler
+     */
+    public synchronized void setDefaultHandler(final PacketHandler defaultHandler)
+    {
+        this.defaultHandler = defaultHandler;
+    }
+
+    /**
+     * Sets handler which receives all events
+     * @param globalHandler Nullable Packet Distributer
+     */
+    public synchronized void setGlobalHandler(final PacketDistributer globalHandler)
+    {
+        this.globalHandler = globalHandler;
+    }
+
+    /**
+     * Returns global handler
+     * @return Packet Distributer (may be null)
+     */
+    public synchronized PacketDistributer getGlobalHandler()
+    {
+        return globalHandler;
     }
 }
