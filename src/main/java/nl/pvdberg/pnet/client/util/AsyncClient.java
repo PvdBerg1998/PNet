@@ -118,21 +118,32 @@ public class AsyncClient implements Client
         if (asyncSenderFuture != null) waitForCompletion(asyncSenderFuture);
     }
 
-    @Override
-    public synchronized boolean send(final Packet packet)
-    {
-        sendAsync(packet, null);
-        return true;
-    }
-
     /**
      * @see Client#send(Packet)
      * @param asyncListener Nullable completion listener. Contains boolean : true if successfully sent
      */
     public synchronized void sendAsync(final Packet packet, final AsyncListener asyncListener)
     {
-        logger.debug("Scheduling async Packet");
-        asyncSenderQueue.push(new AsyncPacket(packet, asyncListener));
+        sendAsync(packet, asyncListener, false);
+    }
+
+    /**
+     * @see Client#send(Packet)
+     * @param asyncListener Nullable completion listener. Contains boolean : true if successfully sent
+     * @param topPriority Whether to send this Packet immediately
+     */
+    public synchronized void sendAsync(final Packet packet, final AsyncListener asyncListener, final boolean topPriority)
+    {
+        logger.debug("Scheduling async Packet, top priority: {}", topPriority);
+
+        if (topPriority)
+        {
+            asyncSenderQueue.addFirst(new AsyncPacket(packet, asyncListener));
+        }
+        else
+        {
+            asyncSenderQueue.addLast(new AsyncPacket(packet, asyncListener));
+        }
 
         // Start thread if needed
         if (asyncSenderFuture == null || asyncSenderFuture.isDone())
@@ -155,7 +166,7 @@ public class AsyncClient implements Client
         {
             try
             {
-                final AsyncPacket asyncPacket = asyncSenderQueue.takeLast();
+                final AsyncPacket asyncPacket = asyncSenderQueue.takeFirst();
                 asyncPacket.onComplete(client.send(asyncPacket.getPacket()));
             }
             catch (final InterruptedException e)
@@ -213,6 +224,12 @@ public class AsyncClient implements Client
     public void setSocket(final Socket socket) throws IOException
     {
         client.setSocket(socket);
+    }
+
+    @Override
+    public boolean send(final Packet packet)
+    {
+        return client.send(packet);
     }
 
     @Override
