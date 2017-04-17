@@ -42,7 +42,7 @@ public class TLS
     /**
      * Strong TLS protocols
      */
-    private static final String[] TLS_PROTOCOLS = { "TLSv1.2", "TLSv1.1" };
+    private static final String[] TLS_PROTOCOLS = { "TLSv1.2" };
 
     /**
      * Strong cipher suites (best to worst)
