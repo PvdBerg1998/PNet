@@ -1,5 +1,8 @@
 package nl.pvdberg.pnet.client.util;
 
+import nl.pvdberg.pnet.client.Client;
+import nl.pvdberg.pnet.event.PNetListener;
+import nl.pvdberg.pnet.packet.Packet;
 import nl.pvdberg.pnet.server.util.TLSServer;
 import org.junit.After;
 import org.junit.Before;
@@ -7,6 +10,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import static org.junit.Assert.assertTrue;
 
@@ -65,5 +69,33 @@ public class TLSClientTest extends PlainClientTest
     public void send() throws Exception
     {
         super.send();
+    }
+
+    @Test
+    @Override
+    public void clientType() throws Exception
+    {
+        client.setClientListener(new PNetListener()
+        {
+            @Override
+            public void onConnect(final Client c)
+            {
+                assertTrue(c instanceof TLSClient);
+            }
+
+            @Override
+            public void onDisconnect(final Client c)
+            {
+
+            }
+
+            @Override
+            public void onReceive(final Packet p, final Client c) throws IOException
+            {
+
+            }
+        });
+
+        assertTrue(client.connect("localhost", port));
     }
 }

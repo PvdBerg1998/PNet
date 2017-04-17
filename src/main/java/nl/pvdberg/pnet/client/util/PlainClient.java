@@ -37,6 +37,7 @@ import java.net.Socket;
 public class PlainClient implements Client
 {
     private final Client client;
+    private PNetListener clientListener;
 
     /**
      * Creates a new normal Client
@@ -53,12 +54,36 @@ public class PlainClient implements Client
                     }
                 }
         );
+
+        client.setClientListener(new PNetListener()
+        {
+            @Override
+            public void onConnect(final Client c)
+            {
+                if (clientListener != null)
+                    clientListener.onConnect(PlainClient.this);
+            }
+
+            @Override
+            public void onDisconnect(final Client c)
+            {
+                if (clientListener != null)
+                    clientListener.onDisconnect(PlainClient.this);
+            }
+
+            @Override
+            public void onReceive(final Packet p, final Client c) throws IOException
+            {
+                if (clientListener != null)
+                    clientListener.onReceive(p, PlainClient.this);
+            }
+        });
     }
 
     @Override
     public void setClientListener(final PNetListener clientListener)
     {
-        client.setClientListener(clientListener);
+        this.clientListener = clientListener;
     }
 
     @Override

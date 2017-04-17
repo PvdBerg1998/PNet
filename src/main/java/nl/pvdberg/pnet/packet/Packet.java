@@ -135,7 +135,7 @@ public class Packet
      * @return Packet created from input
      * @throws IOException when unable to read from stream
      */
-    public static Packet fromStream(final DataInputStream in) throws Exception
+    public static Packet fromStream(final DataInputStream in) throws IOException
     {
         // Packet Type
         final Packet.PacketType packetType = Packet.PacketType.fastValues[in.readByte()];

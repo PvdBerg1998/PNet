@@ -138,11 +138,6 @@ public class ClientImpl implements Client
                 close();
                 break;
             }
-            catch (final Exception e)
-            {
-                logger.warn("Unable to read Packet: {} : {}", e.getClass(), e.getMessage());
-                continue;
-            }
 
             logger.debug("Received packet: {{}}", packet);
 
@@ -153,9 +148,13 @@ public class ClientImpl implements Client
                 {
                     clientListener.onReceive(packet, this);
                 }
+                catch (final IOException e)
+                {
+                    logger.warn("Unable to handle Packet: {} : {}", e.getClass(), e.getMessage());
+                }
                 catch (final Exception e)
                 {
-                    logger.debug("Exception while handling onReceive: {} : {}", e.getClass(), e.getMessage());
+                    logger.error("Exception while handling onReceive: {} : {}", e.getClass(), e.getMessage());
                 }
             }
         }

@@ -46,6 +46,8 @@ public class AsyncClient implements Client
     private final Logger logger = LoggerFactory.getLogger(AsyncClient.class);
 
     private final Client client;
+    private PNetListener clientListener;
+
     private final LinkedBlockingDeque<AsyncPacket> asyncSenderQueue;
     private Future asyncSenderFuture;
 
@@ -57,6 +59,30 @@ public class AsyncClient implements Client
     {
         this.client = client;
         asyncSenderQueue = new LinkedBlockingDeque<AsyncPacket>();
+
+        client.setClientListener(new PNetListener()
+        {
+            @Override
+            public void onConnect(final Client c)
+            {
+                if (clientListener != null)
+                    clientListener.onConnect(AsyncClient.this);
+            }
+
+            @Override
+            public void onDisconnect(final Client c)
+            {
+                if (clientListener != null)
+                    clientListener.onDisconnect(AsyncClient.this);
+            }
+
+            @Override
+            public void onReceive(final Packet p, final Client c) throws IOException
+            {
+                if (clientListener != null)
+                    clientListener.onReceive(p, AsyncClient.this);
+            }
+        });
     }
 
     /**
@@ -141,9 +167,13 @@ public class AsyncClient implements Client
         logger.debug("Async sender thread stopped");
     }
 
-    /**
-     * @see Client#close()
-     */
+    @Override
+    public void setClientListener(final PNetListener clientListener)
+    {
+        this.clientListener = clientListener;
+    }
+
+    @Override
     public synchronized void close()
     {
         client.close();
@@ -171,12 +201,6 @@ public class AsyncClient implements Client
         {
             return packet;
         }
-    }
-
-    @Override
-    public void setClientListener(final PNetListener clientListener)
-    {
-        client.setClientListener(clientListener);
     }
 
     @Override

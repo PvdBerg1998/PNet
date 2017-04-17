@@ -25,6 +25,7 @@
 package nl.pvdberg.pnet.client.util;
 
 import nl.pvdberg.pnet.client.Client;
+import nl.pvdberg.pnet.event.PNetListener;
 import nl.pvdberg.pnet.event.ReceiveListener;
 import nl.pvdberg.pnet.packet.Packet;
 import nl.pvdberg.pnet.packet.PacketBuilder;
@@ -95,5 +96,32 @@ public class PlainClientTest
         assertTrue(client.send(packet));
 
         latch.await();
+    }
+
+    @Test
+    public void clientType() throws Exception
+    {
+        client.setClientListener(new PNetListener()
+        {
+            @Override
+            public void onConnect(final Client c)
+            {
+                assertTrue(c instanceof PlainClient);
+            }
+
+            @Override
+            public void onDisconnect(final Client c)
+            {
+
+            }
+
+            @Override
+            public void onReceive(final Packet p, final Client c) throws IOException
+            {
+
+            }
+        });
+
+        assertTrue(client.connect("localhost", port));
     }
 }

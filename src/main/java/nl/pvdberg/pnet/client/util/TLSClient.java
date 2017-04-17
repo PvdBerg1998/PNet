@@ -40,6 +40,7 @@ import java.net.Socket;
 public class TLSClient implements Client
 {
     private final Client client;
+    private PNetListener clientListener;
 
     private SSLSocket sslSocket;
 
@@ -58,6 +59,30 @@ public class TLSClient implements Client
                     }
                 }
         );
+
+        client.setClientListener(new PNetListener()
+        {
+            @Override
+            public void onConnect(final Client c)
+            {
+                if (clientListener != null)
+                    clientListener.onConnect(TLSClient.this);
+            }
+
+            @Override
+            public void onDisconnect(final Client c)
+            {
+                if (clientListener != null)
+                    clientListener.onDisconnect(TLSClient.this);
+            }
+
+            @Override
+            public void onReceive(final Packet p, final Client c) throws IOException
+            {
+                if (clientListener != null)
+                    clientListener.onReceive(p, TLSClient.this);
+            }
+        });
     }
 
     /**
@@ -85,6 +110,12 @@ public class TLSClient implements Client
         sslSocket = (SSLSocket) socket;
     }
 
+    @Override
+    public void setClientListener(final PNetListener clientListener)
+    {
+        this.clientListener = clientListener;
+    }
+
     /**
      * Returns internal SSLSocket
      * @return SSLSocket
@@ -92,12 +123,6 @@ public class TLSClient implements Client
     public synchronized SSLSocket getSSLSocket()
     {
         return sslSocket;
-    }
-
-    @Override
-    public void setClientListener(final PNetListener clientListener)
-    {
-        client.setClientListener(clientListener);
     }
 
     @Override
