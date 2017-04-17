@@ -20,7 +20,7 @@ public class PacketDistributerTest
 
     protected static final Packet packet2 = new PacketBuilder(Packet.PacketType.Request)
             .withID((short) 2)
-            .build();;
+            .build();
 
     protected PacketDistributer packetDistributer;
 
@@ -61,16 +61,12 @@ public class PacketDistributerTest
                 receivedPackets.add(p);
             }
         });
-
-        packetDistributer.onReceive(packet1, null);
-        assertTrue(receivedPackets.size() == 1);
-
         packetDistributer.setDefaultHandler(new PacketHandler()
         {
             @Override
             public void handlePacket(final Packet p, final Client c) throws IOException
             {
-                // Ignore
+                receivedPackets.add(p);
             }
         });
 
