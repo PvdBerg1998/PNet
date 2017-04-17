@@ -153,7 +153,7 @@ public class ClientImpl implements Client
                 {
                     clientListener.onReceive(packet, this);
                 }
-                catch (final IOException e)
+                catch (final Exception e)
                 {
                     logger.debug("Exception while handling onReceive: {} : {}", e.getClass(), e.getMessage());
                 }
