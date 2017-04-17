@@ -72,7 +72,7 @@ public class AutoClient implements Client
         if (!client.isConnected())
         {
             logger.debug("Auto connecting");
-            if (!client.connect(host, port)) return false;
+            if (!connect(host, port)) return false;
         }
 
         return client.send(packet);
