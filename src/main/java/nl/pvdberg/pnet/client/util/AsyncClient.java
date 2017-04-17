@@ -119,8 +119,7 @@ public class AsyncClient implements Client
     }
 
     /**
-     * @see Client#send(Packet)
-     * @param asyncListener Nullable completion listener. Contains boolean : true if successfully sent
+     * Calls {@link AsyncClient#sendAsync(Packet, AsyncListener, boolean) sendAsync(Packet, AsyncListener, false)}
      */
     public synchronized void sendAsync(final Packet packet, final AsyncListener asyncListener)
     {
@@ -130,7 +129,7 @@ public class AsyncClient implements Client
     /**
      * @see Client#send(Packet)
      * @param asyncListener Nullable completion listener. Contains boolean : true if successfully sent
-     * @param topPriority Whether to send this Packet immediately
+     * @param topPriority Whether to add this Packet at the head of the queue
      */
     public synchronized void sendAsync(final Packet packet, final AsyncListener asyncListener, final boolean topPriority)
     {
