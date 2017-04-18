@@ -32,16 +32,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 
 import static org.junit.Assert.assertTrue;
 
 public class TLSClientTest extends PlainClientTest
 {
-    protected static final String keyStoreFile = "testKeyStore.p12";
-    protected static final String trustStoreFile = "testTrustStore.p12";
+    protected static final File keyStoreFile = new File("testKeyStore.p12");
+    protected static final File trustStoreFile = new File("testTrustStore.p12");
     protected static final char[] password = "password".toCharArray();
     protected static final String certType = "PKCS12";
 
@@ -49,11 +47,11 @@ public class TLSClientTest extends PlainClientTest
     @Override
     public void setUp() throws Exception
     {
-        assertTrue(new File(keyStoreFile).exists());
-        assertTrue(new File(trustStoreFile).exists());
+        assertTrue(keyStoreFile.exists());
+        assertTrue(trustStoreFile.exists());
 
         server = new TLSServer(
-                new FileInputStream(keyStoreFile),
+                fileToBytes(keyStoreFile),
                 password,
                 certType
         );
@@ -61,10 +59,29 @@ public class TLSClientTest extends PlainClientTest
         assertTrue(server.start(port));
 
         client = new TLSClient(
-                new FileInputStream(trustStoreFile),
+                fileToBytes(trustStoreFile),
                 password,
                 certType
         );
+    }
+
+    private static byte[] fileToBytes(final File file)
+    {
+        final FileInputStream fileInputStream;
+
+        final byte[] data = new byte[(int) file.length()];
+        try
+        {
+            fileInputStream = new FileInputStream(file);
+            fileInputStream.read(data);
+            fileInputStream.close();
+        }
+        catch (final IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        return data;
     }
 
     @After
