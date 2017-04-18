@@ -16,7 +16,7 @@ PNet is an easy to use network library for Java 1.6 or higher.
 ---
   
 # Download
-PNet can be downloaded from the [Maven Central Repository](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.pvdberg1998%22). 
+PNet can be downloaded from the [Maven Central Repository](https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.github.pvdberg1998%22%20AND%20a%3A%22pnet%22). 
 PNet is released under the [MIT license](LICENSE.md).
 
 ---
