@@ -29,6 +29,7 @@ import nl.pvdberg.pnet.factory.SocketFactory;
 import nl.pvdberg.pnet.security.TLS;
 
 import javax.net.ssl.SSLSocket;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -58,7 +59,7 @@ public class TLSClient extends ClientExtension
      * Creates a new Client using TLS with given trust store
      * @see nl.pvdberg.pnet.security.TLS#createTLSSocket(String, int, InputStream, char[], String)
      */
-    public TLSClient(final InputStream trustStoreStream, final char[] trustStorePassword, final String trustStoreType)
+    public TLSClient(final byte[] trustStore, final char[] trustStorePassword, final String trustStoreType)
     {
         super(new ClientImpl(
                 new SocketFactory()
@@ -66,7 +67,7 @@ public class TLSClient extends ClientExtension
                     @Override
                     public Socket getSocket(final String host, final int port) throws Exception
                     {
-                        return TLS.createTLSSocket(host, port, trustStoreStream, trustStorePassword, trustStoreType);
+                        return TLS.createTLSSocket(host, port, new ByteArrayInputStream(trustStore), trustStorePassword, trustStoreType);
                     }
                 })
         );

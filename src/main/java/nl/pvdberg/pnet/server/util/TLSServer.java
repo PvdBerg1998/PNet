@@ -33,6 +33,7 @@ import nl.pvdberg.pnet.server.Server;
 import nl.pvdberg.pnet.factory.ServerSocketFactory;
 import nl.pvdberg.pnet.server.ServerImpl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -45,7 +46,7 @@ public class TLSServer implements Server
      * Creates a new Server using TLS.
      * @see nl.pvdberg.pnet.security.TLS#createTLSServerSocket(int, InputStream, char[], String)
      */
-    public TLSServer(final InputStream keyStoreStream, final char[] keyStorePassword, final String keyStoreType) throws IOException
+    public TLSServer(final byte[] keyStore, final char[] keyStorePassword, final String keyStoreType) throws IOException
     {
         super();
 
@@ -55,7 +56,7 @@ public class TLSServer implements Server
                     @Override
                     public ServerSocket getServerSocket(final int port) throws Exception
                     {
-                        return TLS.createTLSServerSocket(port, keyStoreStream, keyStorePassword, keyStoreType);
+                        return TLS.createTLSServerSocket(port, new ByteArrayInputStream(keyStore), keyStorePassword, keyStoreType);
                     }
                 },
                 new ClientFactory()
