@@ -246,6 +246,15 @@ public class PacketBuilder
     }
 
     /**
+     * Returns current data as a byte array
+     * @return Byte array
+     */
+    public synchronized byte[] getBytes()
+    {
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    /**
      * Builds Packet with given data
      * @return Packet
      * @throws IllegalStateException see {@link #checkBuilt()}

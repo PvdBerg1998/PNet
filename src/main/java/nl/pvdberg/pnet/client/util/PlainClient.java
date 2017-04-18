@@ -24,27 +24,20 @@
 
 package nl.pvdberg.pnet.client.util;
 
-import nl.pvdberg.pnet.client.Client;
 import nl.pvdberg.pnet.client.ClientImpl;
-import nl.pvdberg.pnet.event.PNetListener;
 import nl.pvdberg.pnet.factory.SocketFactory;
-import nl.pvdberg.pnet.packet.Packet;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.Socket;
 
-public class PlainClient implements Client
+public class PlainClient extends ClientExtension
 {
-    private final Client client;
-    private PNetListener clientListener;
-
     /**
      * Creates a new normal Client
      */
     public PlainClient()
     {
-        client = new ClientImpl(
+        super(new ClientImpl(
                 new SocketFactory()
                 {
                     @Override
@@ -52,79 +45,7 @@ public class PlainClient implements Client
                     {
                         return new Socket(host, port);
                     }
-                }
+                })
         );
-
-        client.setClientListener(new PNetListener()
-        {
-            @Override
-            public void onConnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onConnect(PlainClient.this);
-            }
-
-            @Override
-            public void onDisconnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onDisconnect(PlainClient.this);
-            }
-
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                if (clientListener != null)
-                    clientListener.onReceive(p, PlainClient.this);
-            }
-        });
-    }
-
-    @Override
-    public void setClientListener(final PNetListener clientListener)
-    {
-        this.clientListener = clientListener;
-    }
-
-    @Override
-    public boolean connect(final String host, final int port)
-    {
-        return client.connect(host, port);
-    }
-
-    @Override
-    public void setSocket(final Socket socket) throws IOException
-    {
-        client.setSocket(socket);
-    }
-
-    @Override
-    public boolean send(final Packet packet)
-    {
-        return client.send(packet);
-    }
-
-    @Override
-    public void close()
-    {
-        client.close();
-    }
-
-    @Override
-    public boolean isConnected()
-    {
-        return client.isConnected();
-    }
-
-    @Override
-    public InetAddress getInetAddress()
-    {
-        return client.getInetAddress();
-    }
-
-    @Override
-    public Socket getSocket()
-    {
-        return client.getSocket();
     }
 }

@@ -24,24 +24,17 @@
 
 package nl.pvdberg.pnet.client.util;
 
-import nl.pvdberg.pnet.client.Client;
 import nl.pvdberg.pnet.client.ClientImpl;
-import nl.pvdberg.pnet.event.PNetListener;
 import nl.pvdberg.pnet.factory.SocketFactory;
-import nl.pvdberg.pnet.packet.Packet;
 import nl.pvdberg.pnet.security.TLS;
 
 import javax.net.ssl.SSLSocket;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 
-public class TLSClient implements Client
+public class TLSClient extends ClientExtension
 {
-    private final Client client;
-    private PNetListener clientListener;
-
     private SSLSocket sslSocket;
 
     /**
@@ -49,7 +42,7 @@ public class TLSClient implements Client
      */
     public TLSClient()
     {
-        client = new ClientImpl(
+        super(new ClientImpl(
                 new SocketFactory()
                 {
                     @Override
@@ -57,32 +50,8 @@ public class TLSClient implements Client
                     {
                         return TLS.createTLSSocket(host, port);
                     }
-                }
+                })
         );
-
-        client.setClientListener(new PNetListener()
-        {
-            @Override
-            public void onConnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onConnect(TLSClient.this);
-            }
-
-            @Override
-            public void onDisconnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onDisconnect(TLSClient.this);
-            }
-
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                if (clientListener != null)
-                    clientListener.onReceive(p, TLSClient.this);
-            }
-        });
     }
 
     /**
@@ -91,7 +60,7 @@ public class TLSClient implements Client
      */
     public TLSClient(final InputStream trustStoreStream, final char[] trustStorePassword, final String trustStoreType)
     {
-        client = new ClientImpl(
+        super(new ClientImpl(
                 new SocketFactory()
                 {
                     @Override
@@ -99,7 +68,7 @@ public class TLSClient implements Client
                     {
                         return TLS.createTLSSocket(host, port, trustStoreStream, trustStorePassword, trustStoreType);
                     }
-                }
+                })
         );
     }
 
@@ -110,12 +79,6 @@ public class TLSClient implements Client
         sslSocket = (SSLSocket) socket;
     }
 
-    @Override
-    public void setClientListener(final PNetListener clientListener)
-    {
-        this.clientListener = clientListener;
-    }
-
     /**
      * Returns internal SSLSocket
      * @return SSLSocket
@@ -123,41 +86,5 @@ public class TLSClient implements Client
     public synchronized SSLSocket getSSLSocket()
     {
         return sslSocket;
-    }
-
-    @Override
-    public boolean connect(final String host, final int port)
-    {
-        return client.connect(host, port);
-    }
-
-    @Override
-    public boolean send(final Packet packet)
-    {
-        return client.send(packet);
-    }
-
-    @Override
-    public void close()
-    {
-        client.close();
-    }
-
-    @Override
-    public boolean isConnected()
-    {
-        return client.isConnected();
-    }
-
-    @Override
-    public InetAddress getInetAddress()
-    {
-        return client.getInetAddress();
-    }
-
-    @Override
-    public Socket getSocket()
-    {
-        return client.getSocket();
     }
 }

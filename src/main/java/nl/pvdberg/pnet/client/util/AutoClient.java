@@ -25,21 +25,13 @@
 package nl.pvdberg.pnet.client.util;
 
 import nl.pvdberg.pnet.client.Client;
-import nl.pvdberg.pnet.event.PNetListener;
 import nl.pvdberg.pnet.packet.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
-
-public class AutoClient implements Client
+public class AutoClient extends ClientExtension
 {
     private final Logger logger = LoggerFactory.getLogger(AutoClient.class);
-
-    private final Client client;
-    private PNetListener clientListener;
 
     private final String host;
     private final int port;
@@ -54,33 +46,10 @@ public class AutoClient implements Client
      */
     public AutoClient(final Client client, final String host, final int port)
     {
-        this.client = client;
+        super(client);
+
         this.host = host;
         this.port = port;
-
-        client.setClientListener(new PNetListener()
-        {
-            @Override
-            public void onConnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onConnect(AutoClient.this);
-            }
-
-            @Override
-            public void onDisconnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onDisconnect(AutoClient.this);
-            }
-
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                if (clientListener != null)
-                    clientListener.onReceive(p, AutoClient.this);
-            }
-        });
     }
 
     /**
@@ -112,12 +81,6 @@ public class AutoClient implements Client
         return connected;
     }
 
-    @Override
-    public void setClientListener(final PNetListener clientListener)
-    {
-        this.clientListener = clientListener;
-    }
-
     /**
      * Returns host
      * @return Host
@@ -134,35 +97,5 @@ public class AutoClient implements Client
     public int getPort()
     {
         return port;
-    }
-
-    @Override
-    public void setSocket(final Socket socket) throws IOException
-    {
-        client.setSocket(socket);
-    }
-
-    @Override
-    public void close()
-    {
-        client.close();
-    }
-
-    @Override
-    public boolean isConnected()
-    {
-        return client.isConnected();
-    }
-
-    @Override
-    public InetAddress getInetAddress()
-    {
-        return client.getInetAddress();
-    }
-
-    @Override
-    public Socket getSocket()
-    {
-        return client.getSocket();
     }
 }

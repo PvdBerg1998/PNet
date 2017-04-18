@@ -26,14 +26,10 @@ package nl.pvdberg.pnet.client.util;
 
 import nl.pvdberg.pnet.client.Client;
 import nl.pvdberg.pnet.event.AsyncListener;
-import nl.pvdberg.pnet.event.PNetListener;
 import nl.pvdberg.pnet.packet.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -41,12 +37,9 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static nl.pvdberg.pnet.threading.ThreadManager.launchThread;
 import static nl.pvdberg.pnet.threading.ThreadManager.waitForCompletion;
 
-public class AsyncClient implements Client
+public class AsyncClient extends ClientExtension
 {
     private final Logger logger = LoggerFactory.getLogger(AsyncClient.class);
-
-    private final Client client;
-    private PNetListener clientListener;
 
     private final LinkedBlockingDeque<AsyncPacket> asyncSenderQueue;
     private Future asyncSenderFuture;
@@ -57,32 +50,9 @@ public class AsyncClient implements Client
      */
     public AsyncClient(final Client client)
     {
-        this.client = client;
+        super(client);
+
         asyncSenderQueue = new LinkedBlockingDeque<AsyncPacket>();
-
-        client.setClientListener(new PNetListener()
-        {
-            @Override
-            public void onConnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onConnect(AsyncClient.this);
-            }
-
-            @Override
-            public void onDisconnect(final Client c)
-            {
-                if (clientListener != null)
-                    clientListener.onDisconnect(AsyncClient.this);
-            }
-
-            @Override
-            public void onReceive(final Packet p, final Client c) throws IOException
-            {
-                if (clientListener != null)
-                    clientListener.onReceive(p, AsyncClient.this);
-            }
-        });
     }
 
     /**
@@ -178,12 +148,6 @@ public class AsyncClient implements Client
     }
 
     @Override
-    public void setClientListener(final PNetListener clientListener)
-    {
-        this.clientListener = clientListener;
-    }
-
-    @Override
     public synchronized void close()
     {
         client.close();
@@ -211,41 +175,5 @@ public class AsyncClient implements Client
         {
             return packet;
         }
-    }
-
-    @Override
-    public boolean connect(final String host, final int port)
-    {
-        return client.connect(host, port);
-    }
-
-    @Override
-    public void setSocket(final Socket socket) throws IOException
-    {
-        client.setSocket(socket);
-    }
-
-    @Override
-    public boolean send(final Packet packet)
-    {
-        return client.send(packet);
-    }
-
-    @Override
-    public boolean isConnected()
-    {
-        return client.isConnected();
-    }
-
-    @Override
-    public InetAddress getInetAddress()
-    {
-        return client.getInetAddress();
-    }
-
-    @Override
-    public Socket getSocket()
-    {
-        return client.getSocket();
     }
 }
