@@ -118,7 +118,7 @@ public class ServerImpl implements Server
                     {
                         synchronized (clients)
                         {
-                            logger.debug("{} connected", c.getInetAddress());
+                            logger.debug("{} connected", c.toString());
                             clients.add(c);
                         }
                         if (serverListener != null) serverListener.onConnect(c);
@@ -129,7 +129,7 @@ public class ServerImpl implements Server
                     {
                         synchronized (clients)
                         {
-                            logger.debug("{} disconnected", c.getInetAddress());
+                            logger.debug("{} disconnected", c.toString());
                             clients.remove(c);
                         }
                         if (serverListener != null) serverListener.onDisconnect(c);
