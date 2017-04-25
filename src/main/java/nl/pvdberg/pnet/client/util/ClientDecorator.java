@@ -32,12 +32,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-public class ClientExtension implements Client
+public class ClientDecorator implements Client
 {
     protected final Client client;
     protected PNetListener clientListener;
 
-    public ClientExtension(final Client client)
+    public ClientDecorator(final Client client)
     {
         this.client = client;
 
@@ -47,21 +47,21 @@ public class ClientExtension implements Client
             public void onConnect(final Client c)
             {
                 if (clientListener != null)
-                    clientListener.onConnect(ClientExtension.this);
+                    clientListener.onConnect(ClientDecorator.this);
             }
 
             @Override
             public void onDisconnect(final Client c)
             {
                 if (clientListener != null)
-                    clientListener.onDisconnect(ClientExtension.this);
+                    clientListener.onDisconnect(ClientDecorator.this);
             }
 
             @Override
             public void onReceive(final Packet p, final Client c) throws IOException
             {
                 if (clientListener != null)
-                    clientListener.onReceive(p, ClientExtension.this);
+                    clientListener.onReceive(p, ClientDecorator.this);
             }
         });
     }
@@ -112,5 +112,11 @@ public class ClientExtension implements Client
     public Socket getSocket()
     {
         return client.getSocket();
+    }
+
+    @Override
+    public String toString()
+    {
+        return client.toString();
     }
 }

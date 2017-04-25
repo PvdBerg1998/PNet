@@ -34,7 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 
-public class TLSClient extends ClientExtension
+public class TLSClient extends ClientDecorator
 {
     private SSLSocket sslSocket;
 

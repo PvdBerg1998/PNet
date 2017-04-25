@@ -30,7 +30,7 @@ import nl.pvdberg.pnet.factory.SocketFactory;
 import java.io.IOException;
 import java.net.Socket;
 
-public class PlainClient extends ClientExtension
+public class PlainClient extends ClientDecorator
 {
     /**
      * Creates a new normal Client

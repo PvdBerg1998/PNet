@@ -37,7 +37,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import static nl.pvdberg.pnet.threading.ThreadManager.launchThread;
 import static nl.pvdberg.pnet.threading.ThreadManager.waitForCompletion;
 
-public class AsyncClient extends ClientExtension
+public class AsyncClient extends ClientDecorator
 {
     private final Logger logger = LoggerFactory.getLogger(AsyncClient.class);
 

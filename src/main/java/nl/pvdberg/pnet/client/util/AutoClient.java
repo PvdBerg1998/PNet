@@ -29,7 +29,7 @@ import nl.pvdberg.pnet.packet.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AutoClient extends ClientExtension
+public class AutoClient extends ClientDecorator
 {
     private final Logger logger = LoggerFactory.getLogger(AutoClient.class);
 
