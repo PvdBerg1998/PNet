@@ -47,18 +47,19 @@ public class TLS
     /**
      * Strong cipher suites (best to worst)
      */
-    private static final String[] TLC_CIPHER_SUITES =
+    private static final String[] TLS_CIPHER_SUITES =
             {
-                    "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
-                    "TLS_DHE_RSA_WITH_CHACHA20_POLY1305",
+                    "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256",
+                    "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256",
+
+                    "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
                     "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+
+                    "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
                     "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
+
                     "TLS_DHE_RSA_WITH_AES_256_GCM_SHA384",
                     "TLS_DHE_RSA_WITH_AES_128_GCM_SHA256",
-                    "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
-                    "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
-                    "TLS_DHE_RSA_WITH_AES_256_CBC_SHA384",
-                    "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
             };
 
 
@@ -132,7 +133,7 @@ public class TLS
         s = (SSLSocket) sslSocketFactory.createSocket(host, port);
 
         s.setEnabledProtocols(TLS.getUsable(TLS.TLS_PROTOCOLS, s.getSupportedProtocols()));
-        s.setEnabledCipherSuites(TLS.getUsable(TLS.TLC_CIPHER_SUITES, s.getSupportedCipherSuites()));
+        s.setEnabledCipherSuites(TLS.getUsable(TLS.TLS_CIPHER_SUITES, s.getSupportedCipherSuites()));
 
         return s;
     }
@@ -150,7 +151,7 @@ public class TLS
         final SSLSocket s = (SSLSocket) sslSocketFactory.createSocket(host, port);
 
         s.setEnabledProtocols(TLS.getUsable(TLS.TLS_PROTOCOLS, s.getSupportedProtocols()));
-        s.setEnabledCipherSuites(TLS.getUsable(TLS.TLC_CIPHER_SUITES, s.getSupportedCipherSuites()));
+        s.setEnabledCipherSuites(TLS.getUsable(TLS.TLS_CIPHER_SUITES, s.getSupportedCipherSuites()));
 
         return s;
     }
@@ -190,7 +191,7 @@ public class TLS
         final SSLServerSocket s = (SSLServerSocket) socketFactory.createServerSocket(port);
 
         s.setEnabledProtocols(TLS.getUsable(TLS.TLS_PROTOCOLS, s.getSupportedProtocols()));
-        s.setEnabledCipherSuites(TLS.getUsable(TLS.TLC_CIPHER_SUITES, s.getSupportedCipherSuites()));
+        s.setEnabledCipherSuites(TLS.getUsable(TLS.TLS_CIPHER_SUITES, s.getSupportedCipherSuites()));
         s.setNeedClientAuth(false);
 
         return s;
