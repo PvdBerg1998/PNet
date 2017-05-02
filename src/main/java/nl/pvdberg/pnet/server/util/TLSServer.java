@@ -25,12 +25,10 @@
 package nl.pvdberg.pnet.server.util;
 
 import nl.pvdberg.pnet.client.Client;
-import nl.pvdberg.pnet.factory.ClientFactory;
 import nl.pvdberg.pnet.client.util.TLSClient;
-import nl.pvdberg.pnet.event.PNetListener;
-import nl.pvdberg.pnet.security.TLS;
-import nl.pvdberg.pnet.server.Server;
+import nl.pvdberg.pnet.factory.ClientFactory;
 import nl.pvdberg.pnet.factory.ServerSocketFactory;
+import nl.pvdberg.pnet.security.TLS;
 import nl.pvdberg.pnet.server.ServerImpl;
 
 import java.io.ByteArrayInputStream;
@@ -38,19 +36,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 
-public class TLSServer implements Server
+public class TLSServer extends ServerDecorator
 {
-    private final Server server;
-
     /**
      * Creates a new Server using TLS.
      * @see nl.pvdberg.pnet.security.TLS#createTLSServerSocket(int, InputStream, char[], String)
      */
     public TLSServer(final byte[] keyStore, final char[] keyStorePassword, final String keyStoreType) throws IOException
     {
-        super();
-
-        server = new ServerImpl(
+        super(new ServerImpl(
                 new ServerSocketFactory()
                 {
                     @Override
@@ -67,24 +61,6 @@ public class TLSServer implements Server
                         return new TLSClient();
                     }
                 }
-        );
-    }
-
-    @Override
-    public void setListener(final PNetListener serverListener)
-    {
-        server.setListener(serverListener);
-    }
-
-    @Override
-    public boolean start(final int port)
-    {
-        return server.start(port);
-    }
-
-    @Override
-    public void stop()
-    {
-        server.stop();
+        ));
     }
 }

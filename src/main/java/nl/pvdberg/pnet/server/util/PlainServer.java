@@ -25,28 +25,22 @@
 package nl.pvdberg.pnet.server.util;
 
 import nl.pvdberg.pnet.client.Client;
-import nl.pvdberg.pnet.factory.ClientFactory;
 import nl.pvdberg.pnet.client.util.PlainClient;
-import nl.pvdberg.pnet.event.PNetListener;
-import nl.pvdberg.pnet.server.Server;
+import nl.pvdberg.pnet.factory.ClientFactory;
 import nl.pvdberg.pnet.factory.ServerSocketFactory;
 import nl.pvdberg.pnet.server.ServerImpl;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 
-public class PlainServer implements Server
+public class PlainServer extends ServerDecorator
 {
-    private final Server server;
-
     /**
      * Creates a new normal Server
      */
     public PlainServer() throws IOException
     {
-        super();
-
-        server = new ServerImpl(
+        super(new ServerImpl(
                 new ServerSocketFactory()
                 {
                     @Override
@@ -63,24 +57,6 @@ public class PlainServer implements Server
                         return new PlainClient();
                     }
                 }
-        );
-    }
-
-    @Override
-    public void setListener(final PNetListener serverListener)
-    {
-        server.setListener(serverListener);
-    }
-
-    @Override
-    public boolean start(final int port)
-    {
-        return server.start(port);
-    }
-
-    @Override
-    public void stop()
-    {
-        server.stop();
+        ));
     }
 }
