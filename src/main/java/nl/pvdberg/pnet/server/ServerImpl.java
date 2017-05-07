@@ -43,7 +43,7 @@ import static nl.pvdberg.pnet.threading.ThreadManager.launchThread;
 
 public class ServerImpl implements Server
 {
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(ServerImpl.class);
 
     private final ServerSocketFactory ssf;
     private final ClientFactory cf;
@@ -62,7 +62,6 @@ public class ServerImpl implements Server
         this.ssf = ssf;
         this.cf = cf;
 
-        logger = LoggerFactory.getLogger(ServerImpl.class);
         clients = new ArrayList<Client>();
     }
 

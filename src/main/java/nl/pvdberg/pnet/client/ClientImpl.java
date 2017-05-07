@@ -39,7 +39,7 @@ import static nl.pvdberg.pnet.threading.ThreadManager.launchThread;
 
 public class ClientImpl implements Client
 {
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(ClientImpl.class);
 
     private final SocketFactory sf;
 
@@ -55,8 +55,6 @@ public class ClientImpl implements Client
     public ClientImpl(final SocketFactory sf)
     {
         this.sf = sf;
-
-        logger = LoggerFactory.getLogger(ClientImpl.class);
     }
 
     @Override
