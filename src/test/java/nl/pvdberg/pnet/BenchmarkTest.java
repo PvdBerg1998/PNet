@@ -29,6 +29,7 @@ import nl.pvdberg.pnet.client.util.PlainClient;
 import nl.pvdberg.pnet.event.ReceiveListener;
 import nl.pvdberg.pnet.packet.Packet;
 import nl.pvdberg.pnet.packet.PacketBuilder;
+import nl.pvdberg.pnet.packet.PacketReader;
 import nl.pvdberg.pnet.server.Server;
 import nl.pvdberg.pnet.server.util.PlainServer;
 import org.junit.After;
@@ -110,8 +111,8 @@ public class BenchmarkTest
             @Override
             public void onReceive(final Packet p, final Client c) throws IOException
             {
-                //assertArrayEquals(randomData, p.getData());
-                assertEquals(randomData.length, p.getData().length);
+                //assertArrayEquals(randomData, new PacketReader(p).readBytes());
+                assertEquals(randomData.length + 4, p.getData().length);
             }
         });
 

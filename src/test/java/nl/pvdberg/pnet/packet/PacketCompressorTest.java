@@ -48,6 +48,6 @@ public class PacketCompressorTest
         final Packet decompressed = PacketCompressor.decompress(compressed);
 
         assertThat(compressed.getData(), not(equalTo(data)));
-        assertArrayEquals(data, decompressed.getData());
+        assertArrayEquals(data, new PacketReader(packet).readBytes());
     }
 }
