@@ -50,8 +50,7 @@ public class PacketBuilderReaderTest
         assertEquals(true, packetReader.readBoolean());
         assertEquals(1, packetReader.readByte());
 
-        final byte[] bytes = new byte[2];
-        packetReader.readBytes(bytes, 2);
+        final byte[] bytes = packetReader.readBytes();
         assertArrayEquals(new byte[] {1, 2}, bytes);
 
         assertEquals(0.123d, packetReader.readDouble(), 0.0001d);

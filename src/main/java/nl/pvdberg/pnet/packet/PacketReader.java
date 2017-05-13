@@ -57,14 +57,18 @@ public class PacketReader
 
     /**
      * Reads byte array into output
-     * @param out Byte array output
+     * @return Bytes
      * @throws IOException when not enough data is available
      */
-    public synchronized void readBytes(final byte[] out) throws IOException
+    public synchronized byte[] readBytes() throws IOException
     {
         final int dataLength = dataInputStream.readInt();
-        final int dataRead = dataInputStream.read(out, 0, dataLength);
+        final byte[] data = new byte[dataLength];
+
+        final int dataRead = dataInputStream.read(data, 0, dataLength);
         if (dataRead != dataLength) throw new IOException("Not enough data available");
+
+        return data;
     }
 
     /**
