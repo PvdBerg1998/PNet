@@ -103,6 +103,7 @@ public class PacketBuilder
         checkBuilt();
         try
         {
+            dataOutputStream.writeInt(b.length);
             dataOutputStream.write(b);
         }
         catch (final IOException e)
