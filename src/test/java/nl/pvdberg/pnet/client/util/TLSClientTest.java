@@ -41,7 +41,7 @@ public class TLSClientTest extends PlainClientTest
     protected static final File keyStoreFile = new File("testKeyStore.p12");
     protected static final File trustStoreFile = new File("testTrustStore.p12");
     protected static final char[] password = "password".toCharArray();
-    protected static final String certType = "PKCS12";
+    protected static final String storeType = "PKCS12";
 
     @Before
     @Override
@@ -53,7 +53,7 @@ public class TLSClientTest extends PlainClientTest
         server = new TLSServer(
                 fileToBytes(keyStoreFile),
                 password,
-                certType
+                storeType
         );
 
         assertTrue(server.start(port));
@@ -61,7 +61,7 @@ public class TLSClientTest extends PlainClientTest
         client = new TLSClient(
                 fileToBytes(trustStoreFile),
                 password,
-                certType
+                storeType
         );
     }
 

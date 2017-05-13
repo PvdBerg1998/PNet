@@ -28,19 +28,17 @@ import nl.pvdberg.pnet.client.Client;
 import nl.pvdberg.pnet.client.util.TLSClient;
 import nl.pvdberg.pnet.factory.ClientFactory;
 import nl.pvdberg.pnet.factory.ServerSocketFactory;
-import nl.pvdberg.pnet.security.TLS;
+import nl.pvdberg.pnet.security.TLSBuilder;
 import nl.pvdberg.pnet.server.ServerImpl;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 
 public class TLSServer extends ServerDecorator
 {
     /**
-     * Creates a new Server using TLS.
-     * @see nl.pvdberg.pnet.security.TLS#createTLSServerSocket(int, InputStream, char[], String)
+     * Creates a new Server using TLS
      */
     public TLSServer(final byte[] keyStore, final char[] keyStorePassword, final String keyStoreType) throws IOException
     {
@@ -50,7 +48,10 @@ public class TLSServer extends ServerDecorator
                     @Override
                     public ServerSocket getServerSocket(final int port) throws Exception
                     {
-                        return TLS.createTLSServerSocket(port, new ByteArrayInputStream(keyStore), keyStorePassword, keyStoreType);
+                        return new TLSBuilder()
+                                .withPort(port)
+                                .withKeyStore(keyStoreType, new ByteArrayInputStream(keyStore), keyStorePassword)
+                                .buildServerSocket();
                     }
                 },
                 new ClientFactory()

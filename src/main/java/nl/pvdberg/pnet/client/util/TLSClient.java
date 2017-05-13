@@ -26,12 +26,11 @@ package nl.pvdberg.pnet.client.util;
 
 import nl.pvdberg.pnet.client.ClientImpl;
 import nl.pvdberg.pnet.factory.SocketFactory;
-import nl.pvdberg.pnet.security.TLS;
+import nl.pvdberg.pnet.security.TLSBuilder;
 
 import javax.net.ssl.SSLSocket;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 
 public class TLSClient extends ClientDecorator
@@ -49,7 +48,10 @@ public class TLSClient extends ClientDecorator
                     @Override
                     public Socket getSocket(final String host, final int port) throws Exception
                     {
-                        return TLS.createTLSSocket(host, port);
+                        return new TLSBuilder()
+                                .withHost(host)
+                                .withPort(port)
+                                .buildSocket();
                     }
                 })
         );
@@ -57,7 +59,6 @@ public class TLSClient extends ClientDecorator
 
     /**
      * Creates a new Client using TLS with given trust store
-     * @see nl.pvdberg.pnet.security.TLS#createTLSSocket(String, int, InputStream, char[], String)
      */
     public TLSClient(final byte[] trustStore, final char[] trustStorePassword, final String trustStoreType)
     {
@@ -67,7 +68,11 @@ public class TLSClient extends ClientDecorator
                     @Override
                     public Socket getSocket(final String host, final int port) throws Exception
                     {
-                        return TLS.createTLSSocket(host, port, new ByteArrayInputStream(trustStore), trustStorePassword, trustStoreType);
+                        return new TLSBuilder()
+                                .withHost(host)
+                                .withPort(port)
+                                .withTrustStore(trustStoreType, new ByteArrayInputStream(trustStore), trustStorePassword)
+                                .buildSocket();
                     }
                 })
         );
