@@ -31,7 +31,6 @@ import java.io.IOException;
 public class PacketReader
 {
     private final Packet packet;
-    private final ByteArrayInputStream byteArrayInputStream;
     private final DataInputStream dataInputStream;
 
     /**
@@ -41,8 +40,15 @@ public class PacketReader
     public PacketReader(final Packet packet)
     {
         this.packet = packet;
-        byteArrayInputStream = new ByteArrayInputStream(packet.getData());
-        dataInputStream = new DataInputStream(byteArrayInputStream);
+        dataInputStream = new DataInputStream(new ByteArrayInputStream(packet.getData()));
+    }
+
+    /**
+     * See {@link Packet#getPacketID()}
+     */
+    public short getPacketID()
+    {
+        return packet.getPacketID();
     }
 
     /**

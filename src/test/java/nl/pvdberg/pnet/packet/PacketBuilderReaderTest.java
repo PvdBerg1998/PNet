@@ -30,35 +30,45 @@ import static org.junit.Assert.*;
 
 public class PacketBuilderReaderTest
 {
+    protected static final Packet.PacketType TYPE = Packet.PacketType.Reply;
+    protected static final short ID = 123;
+    protected static final boolean BOOLEAN = true;
+    protected static final byte BYTE = 1;
+    protected static final byte[] BYTES = new byte[] {1, 2};
+    protected static final double DOUBLE = 0.123d;
+    protected static final float FLOAT = 0.321f;
+    protected static final int INT = Integer.MAX_VALUE;
+    protected static final long LONG = Long.MIN_VALUE;
+    protected static final short SHORT = Short.MIN_VALUE;
+    protected static final String STRING = "Hello!";
+
     @Test
     public void buildAndRead() throws Exception
     {
-        final Packet packet = new PacketBuilder(Packet.PacketType.Reply)
-                .withBoolean(true)
-                .withByte((byte) 1)
-                .withBytes(new byte[] {1, 2})
-                .withDouble(0.123d)
-                .withFloat(0.321f)
-                .withID((short) 123)
-                .withInt(Integer.MAX_VALUE)
-                .withLong(Long.MIN_VALUE)
-                .withShort(Short.MIN_VALUE)
-                .withString("hello!")
+        final Packet packet = new PacketBuilder(TYPE)
+                .withID(ID)
+                .withBoolean(BOOLEAN)
+                .withByte(BYTE)
+                .withBytes(BYTES)
+                .withDouble(DOUBLE)
+                .withFloat(FLOAT)
+                .withInt(INT)
+                .withLong(LONG)
+                .withShort(SHORT)
+                .withString(STRING)
                 .build();
 
         final PacketReader packetReader = new PacketReader(packet);
-        assertEquals(true, packetReader.readBoolean());
-        assertEquals(1, packetReader.readByte());
 
-        final byte[] bytes = packetReader.readBytes();
-        assertArrayEquals(new byte[] {1, 2}, bytes);
-
-        assertEquals(0.123d, packetReader.readDouble(), 0.0001d);
-        assertEquals(0.321f, packetReader.readFloat(), 0.0001f);
-        assertEquals(123, packetReader.getPacket().getPacketID());
-        assertEquals(Integer.MAX_VALUE, packetReader.readInt());
-        assertEquals(Long.MIN_VALUE, packetReader.readLong());
-        assertEquals(Short.MIN_VALUE, packetReader.readShort());
-        assertEquals("hello!", packetReader.readString());
+        assertEquals(ID, packetReader.getPacket().getPacketID());
+        assertEquals(BOOLEAN, packetReader.readBoolean());
+        assertEquals(BYTE, packetReader.readByte());
+        assertArrayEquals(BYTES, packetReader.readBytes());
+        assertEquals(DOUBLE, packetReader.readDouble(), 0.0001d);
+        assertEquals(FLOAT, packetReader.readFloat(), 0.0001f);
+        assertEquals(INT, packetReader.readInt());
+        assertEquals(LONG, packetReader.readLong());
+        assertEquals(SHORT, packetReader.readShort());
+        assertEquals(STRING, packetReader.readString());
     }
 }

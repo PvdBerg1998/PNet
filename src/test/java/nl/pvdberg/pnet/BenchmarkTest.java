@@ -29,7 +29,6 @@ import nl.pvdberg.pnet.client.util.PlainClient;
 import nl.pvdberg.pnet.event.ReceiveListener;
 import nl.pvdberg.pnet.packet.Packet;
 import nl.pvdberg.pnet.packet.PacketBuilder;
-import nl.pvdberg.pnet.packet.PacketReader;
 import nl.pvdberg.pnet.server.Server;
 import nl.pvdberg.pnet.server.util.PlainServer;
 import org.junit.After;
