@@ -12,6 +12,9 @@ PNet is an easy to use network library for Java 1.6 or higher.
 
 ## Known issues:
 - None
+
+## WIP:
+- Kotlin support
   
 ---
   
