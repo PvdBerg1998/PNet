@@ -22,7 +22,11 @@
  * SOFTWARE.
  */
 
-package nl.pvdberg.pnet.packet
+package nl.pvdberg.pnet
+
+import nl.pvdberg.pnet.packet.Packet
+import nl.pvdberg.pnet.packet.PacketBuilder
+import nl.pvdberg.pnet.packet.PacketReader
 
 object KPacketBuilder
 {

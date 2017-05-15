@@ -24,9 +24,11 @@
 
 package nl.pvdberg.pnet.packet
 
+import nl.pvdberg.pnet.KPacketBuilder
+import nl.pvdberg.pnet.KPacketReader
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class KPacketTest : PacketBuilderReaderTest()
 {
@@ -49,7 +51,7 @@ class KPacketTest : PacketBuilderReaderTest()
 
         KPacketReader.read(packet)
         {
-            assertEquals(ID, getPacketID())
+            assertEquals(ID, packetID)
             assertEquals(BOOLEAN, readBoolean())
             assertEquals(BYTE, readByte())
             assertArrayEquals(BYTES, readBytes())
