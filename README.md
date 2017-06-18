@@ -12,9 +12,6 @@ PNet is an easy to use network library for Java 1.6 or higher.
 
 ## Known issues:
 - None
-
-## WIP:
-- [Kotlin support](#kotlin)
   
 ---
   
@@ -247,26 +244,3 @@ A default handler can be set by using `packetDistributer.setDefaultHandler(Packe
 
 ## Multithreading Note
 PNet uses a threadpool to handle all threading. If your application needs to shut down immediately, this can be done by killing all threads using `ThreadManager.shutdown()`.
-
----
-
-## Kotlin
-PNet currently has 2 Kotlin extensions: one for `PacketBuilder`, one for `PacketReader`.
-```Kotlin
-val packet = KPacketBuilder.build(Packet.PacketType.Request)
-{
-    withInt(1)
-    withString("Hello Kotlin!")
-}
-
-KPacketReader.read(packet)
-{
-    when (readInt())
-    {
-        1 -> println("1!")
-        2 -> println("2!")
-        else -> println("Something else")
-    }
-    val hello = readString().dropLast(8)
-}
-```
