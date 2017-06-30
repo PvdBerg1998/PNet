@@ -45,12 +45,12 @@
         <maven.compiler.target>1.6</maven.compiler.target>
 
         <slf4j.version>1.7.25</slf4j.version>
-        <junit.version>4.11</junit.version>
+        <junit.version>4.12</junit.version>
 
-        <maven.source.version>2.2.1</maven.source.version>
-        <maven.javadoc.version>2.9.1</maven.javadoc.version>
-        <maven.gpg.version>1.5</maven.gpg.version>
-        <nexus.version>1.6.7</nexus.version>
+        <maven.source.version>3.0.1</maven.source.version>
+        <maven.javadoc.version>2.10.4</maven.javadoc.version>
+        <maven.gpg.version>1.6</maven.gpg.version>
+        <nexus.version>1.6.8</nexus.version>
         <maven.compiler.version>3.6.1</maven.compiler.version>
     </properties>
 
@@ -138,6 +138,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
+			
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
