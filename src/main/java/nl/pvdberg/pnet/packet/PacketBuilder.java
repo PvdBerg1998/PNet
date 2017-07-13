@@ -139,15 +139,15 @@ public class PacketBuilder
      */
     public synchronized PacketBuilder withString(final String s)
     {
-        checkBuilt();
         try
         {
-            dataOutputStream.writeUTF(s);
+            withBytes(s.getBytes("utf-8"));
         }
-        catch (final IOException e)
+        catch (final UnsupportedEncodingException e)
         {
-            logger.error("Unable to add String: {} : {}", e.getClass(), e.getMessage());
+            logger.error("UTF-8 encoding is not supported");
         }
+
         return this;
     }
 

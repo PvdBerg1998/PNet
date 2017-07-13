@@ -94,7 +94,7 @@ public class PacketReader
      */
     public synchronized String readString() throws IOException
     {
-        return dataInputStream.readUTF();
+        return new String(readBytes(), "utf-8");
     }
 
     /**

@@ -45,6 +45,23 @@ public class PacketBuilderReaderTest
     @Test
     public void buildAndRead() throws Exception
     {
+        final StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 10000; i++) sb.append("1234567890");
+        final String HUGE_STRING = sb.toString();
+
+        int utflen = 0;
+        for (int i = 0; i < HUGE_STRING.length(); i++) {
+            final int c = HUGE_STRING.charAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                utflen++;
+            } else if (c > 0x07FF) {
+                utflen += 3;
+            } else {
+                utflen += 2;
+            }
+        }
+        assertTrue(utflen > 65536);
+
         final Packet packet = new PacketBuilder(TYPE)
                 .withID(ID)
                 .withBoolean(BOOLEAN)
@@ -56,6 +73,7 @@ public class PacketBuilderReaderTest
                 .withLong(LONG)
                 .withShort(SHORT)
                 .withString(STRING)
+                .withString(HUGE_STRING)
                 .build();
 
         final PacketReader packetReader = new PacketReader(packet);
@@ -70,5 +88,6 @@ public class PacketBuilderReaderTest
         assertEquals(LONG, packetReader.readLong());
         assertEquals(SHORT, packetReader.readShort());
         assertEquals(STRING, packetReader.readString());
+        assertEquals(HUGE_STRING, packetReader.readString());
     }
 }
