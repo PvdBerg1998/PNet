@@ -73,11 +73,11 @@
 
     <distributionManagement>
         <snapshotRepository>
-            <id>pnet</id>
+            <id>maven</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>pnet</id>
+            <id>maven</id>
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -133,7 +133,7 @@
                 <version>${nexus.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <serverId>pnet</serverId>
+                    <serverId>maven</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
