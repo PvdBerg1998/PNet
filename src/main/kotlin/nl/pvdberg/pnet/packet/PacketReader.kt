@@ -28,13 +28,16 @@ import java.io.ByteArrayInputStream
 import java.io.DataInputStream
 import java.nio.charset.Charset
 
+inline fun <T> Packet.read(charset: Charset = Packet.DEFAULT_CHARSET, apply: PacketReader.() -> T) =
+        PacketReader(this, charset).apply()
+
 /**
  * Provides an easy way to read a Packet.
  * Data has to be read in the same order as it was written
  * @param packet Packet to read
  * @param charset Charset to use for strings
  */
-class PacketReader(val packet: Packet, val charset: Charset)
+class PacketReader(val packet: Packet, val charset: Charset = Packet.DEFAULT_CHARSET)
 {
     private val dataInputStream: DataInputStream = DataInputStream(ByteArrayInputStream(packet.data))
 

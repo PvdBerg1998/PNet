@@ -29,6 +29,9 @@ import java.io.Closeable
 import java.io.DataOutputStream
 import java.nio.charset.Charset
 
+inline fun Packet.PacketType.build(charset: Charset = Packet.DEFAULT_CHARSET, apply: PacketBuilder.() -> Unit) =
+    PacketBuilder(this, charset).apply(apply).packet
+
 /**
  * Provides an easy way to build a Packet.
  * Data has to be written in the same order as it will be read

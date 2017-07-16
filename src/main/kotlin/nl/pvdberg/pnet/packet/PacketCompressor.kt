@@ -26,38 +26,31 @@ package nl.pvdberg.pnet.packet
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.util.zip.Deflater
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
 object PacketCompressor
 {
-    private val INFLATE_BUFFER_SIZE = 16
+    val INFLATE_BUFFER_SIZE = 128
 
     /**
      * Decompresses given Packet
      * @param packet Compressed Packet
-     * *
      * @return Decompressed Packet
-     * *
-     * @throws IOException when unable to decompress
      */
-    @Throws(IOException::class)
     fun decompress(packet: Packet): Packet
     {
-        val byteArrayInputStream = ByteArrayInputStream(packet.data)
-        val gzipInputStream = GZIPInputStream(byteArrayInputStream)
-
+        val gzipInputStream = GZIPInputStream(ByteArrayInputStream(packet.data))
         val byteArrayOutputStream = ByteArrayOutputStream()
 
         // Read from input until everything is inflated
         val buffer = ByteArray(INFLATE_BUFFER_SIZE)
-        var bytesInflated: Int
-        while ((bytesInflated = gzipInputStream.read(buffer)) >= 0)
+        do
         {
+            val bytesInflated = gzipInputStream.read(buffer)
             byteArrayOutputStream.write(buffer, 0, bytesInflated)
-        }
+        } while (bytesInflated > 0)
 
         return Packet(
                 packet.packetType,
@@ -67,14 +60,10 @@ object PacketCompressor
     }
 
     /**
-     * Compresses given Packet. Note that this can increase the total size when used incorrectly
+     * Compresses given Packet
      * @param packet Packet to compress
-     * *
      * @return Compressed Packet
-     * *
-     * @throws IOException when unable to compress
      */
-    @Throws(IOException::class)
     fun compress(packet: Packet): Packet
     {
         val byteArrayOutputStream = ByteArrayOutputStream()

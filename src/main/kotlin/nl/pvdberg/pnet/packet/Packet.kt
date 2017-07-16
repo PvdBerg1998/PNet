@@ -24,130 +24,63 @@
 
 package nl.pvdberg.pnet.packet
 
-import java.io.*
+import nl.pvdberg.hashkode.compareFields
+import nl.pvdberg.hashkode.hashKode
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.util.*
 
-class Packet
-/**
- * Creates a new immutable Packet
- * @param packetType Packet Type
- * *
- * @param packetID Packet ID
- * *
- * @param data Packet Data
- */
-(
-        /**
-         * Returns Packet Type
-         * @return Packet Type
-         */
+data class Packet(
         val packetType: PacketType,
-        /**
-         * Returns Packet ID
-         * @return Packet ID
-         */
         val packetID: Short,
-        /**
-         * Returns Packet data
-         * @return Data
-         */
-        val data: ByteArray)
+        val data: ByteArray
+)
 {
-    /**
-     * Returns Data length
-     * @return Data length
-     */
-    val dataLength: Int
-
     enum class PacketType
     {
         Request,
         Reply;
-
-        companion object
-        {
-
-            val fastValues = values()
-        }
     }
 
-    init
-    {
-        dataLength = data.size
-    }
-
-    /**
-     * Returns whether Packet is of type Request
-     * @return PacketType is Request
-     */
-    val isRequest: Boolean
-        get() = packetType == PacketType.Request
-
-    /**
-     * Returns whether Packet is of type Reply
-     * @return PacketType is Reply
-     */
-    val isReply: Boolean
-        get() = packetType == PacketType.Reply
+    val isRequest inline get() = packetType == PacketType.Request
+    val isReply inline get () = packetType == PacketType.Reply
 
     /**
      * Writes Packet into DataOutputStream
      * @param out DataOutputStream to write into
-     * *
-     * @throws IOException when unable to write to stream
      */
-    @Throws(IOException::class)
-    fun write(out: DataOutputStream)
+    fun write(out: DataOutputStream) = with(out)
     {
-        // Packet Type
-        out.writeByte(packetType.ordinal)
-
-        // Packet ID
-        out.writeShort(packetID.toInt())
-
-        // Data Length
-        out.writeInt(dataLength)
-
-        // Data
-        out.write(data)
+        writeByte(packetType.ordinal)
+        writeShort(packetID.toInt())
+        writeInt(data.size)
+        write(data)
     }
 
-    override fun toString(): String
+    override fun equals(other: Any?) = compareFields(other)
     {
-        return "Type: [$packetType] ID: [$packetID] Data: [$dataLength bytes]"
+        compareField(Packet::packetType)
+        compareField(Packet::packetID)
+        compareBy { Arrays.equals(one.data, two.data) }
     }
+
+    override fun hashCode() = hashKode(packetType, packetID, data)
 
     companion object
     {
+        val DEFAULT_CHARSET = Charsets.UTF_8
+        private val fastValues = PacketType.values()
 
         /**
          * Reads a Packet from raw input data
          * @param in DataInputStream to fromStream from
-         * *
          * @return Packet created from input
-         * *
-         * @throws IOException when unable to read from stream
          */
-        @Throws(IOException::class)
-        fun fromStream(`in`: DataInputStream): Packet
-        {
-            // Packet Type
-            val packetType = Packet.PacketType.fastValues[`in`.readByte()]
-
-            // Packet ID
-            val packetID = `in`.readShort()
-
-            // Data Length
-            val dataLength = `in`.readInt()
-
-            // Data
-            val data = ByteArray(dataLength)
-            `in`.readFully(data)
-
-            return Packet(
-                    packetType,
-                    packetID,
-                    data
-            )
-        }
+        fun fromStream(inputStream: DataInputStream) =
+                Packet(
+                        packetType = fastValues[inputStream.readByte().toInt()],
+                        packetID = inputStream.readShort(),
+                        data = ByteArray(inputStream.readInt()).apply { inputStream.readFully(this) }
+                )
     }
 }
