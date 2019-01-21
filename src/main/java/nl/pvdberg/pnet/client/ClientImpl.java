@@ -79,7 +79,7 @@ public class ClientImpl implements Client
         }
         catch (final Exception e)
         {
-            logger.error("Unable to connect: {} : {}", e.getClass(), e.getMessage());
+            logger.error("Unable to connect: {} :", e.getClass(), e);
             return false;
         }
     }
@@ -132,7 +132,7 @@ public class ClientImpl implements Client
             }
             catch (final IOException e)
             {
-                logger.error("Error in listener thread: {} : {}", e.getClass(), e.getMessage());
+                logger.error("Error in listener thread: {} :", e.getClass(), e);
                 close();
                 break;
             }
@@ -148,11 +148,11 @@ public class ClientImpl implements Client
                 }
                 catch (final IOException e)
                 {
-                    logger.warn("Unable to handle Packet: {} : {}", e.getClass(), e.getMessage());
+                    logger.warn("Unable to handle Packet: {} :", e.getClass(), e);
                 }
                 catch (final Exception e)
                 {
-                    logger.error("Exception while handling onReceive: {} : {}", e.getClass(), e.getMessage());
+                    logger.error("Exception while handling onReceive: {} :", e.getClass(), e);
                 }
             }
         }
@@ -174,7 +174,7 @@ public class ClientImpl implements Client
         }
         catch (final IOException e)
         {
-            logger.error("Error while sending packet {{}} : {} : {}", e.getClass(), e.getMessage());
+            logger.error("Error while sending packet {{}} : {} :", e.getClass(), e);
             return false;
         }
     }
@@ -194,7 +194,7 @@ public class ClientImpl implements Client
         }
         catch (final IOException e)
         {
-            logger.error("Unable to close socket: {} : {}", e.getClass(), e.getMessage());
+            logger.error("Unable to close socket: {} :", e.getClass(), e);
         }
 
         if (clientListener != null) clientListener.onDisconnect(this);

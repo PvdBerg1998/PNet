@@ -82,7 +82,7 @@ public class ServerImpl implements Server
         }
         catch (final Exception e)
         {
-            logger.error("Unable to start server: {} : {}", e.getClass(), e.getMessage());
+            logger.error("Unable to start server: {} :", e.getClass(), e);
             return false;
         }
 
@@ -150,7 +150,7 @@ public class ServerImpl implements Server
             }
             catch (final IOException e)
             {
-                logger.error("Error in listener thread: {} : {}", e.getClass(), e.getMessage());
+                logger.error("Error in listener thread: {} :", e.getClass(), e);
                 stop();
                 break;
             }
@@ -184,7 +184,7 @@ public class ServerImpl implements Server
         }
         catch (final Exception e)
         {
-            logger.error("Unable to close server: {} : {}", e.getClass(), e.getMessage());
+            logger.error("Unable to close server: {} :", e.getClass(), e);
         }
     }
 }
