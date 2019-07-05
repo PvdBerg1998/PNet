@@ -1,3 +1,5 @@
+*Warning: this library is unmaintained.*
+
 # PNet
 PNet is an easy to use network library for Java 1.6 or higher.
 
